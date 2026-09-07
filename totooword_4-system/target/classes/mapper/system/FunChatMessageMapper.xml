@@ -100,7 +100,7 @@ ORDER BY message_id DESC LIMIT 1
         <include refid="selectFunChatMessageVo"/>
         <where>
             <!-- 私聊消息 -->
-            <if test="messageType == '0'">
+            <if test="messageType == 0">
                 (<if test="senderId != null and senderId != ''">AND sender_id = #{senderId}</if>
                 <if test="receiverId != null and receiverId != ''"> AND receiver_id = #{receiverId})</if>
                 )OR(
@@ -109,7 +109,7 @@ ORDER BY message_id DESC LIMIT 1
                 And message_type = #{messageType}
             </if>
             <!-- 群聊消息 -->
-            <if test="messageType == '1'">
+            <if test="messageType == 1">
                 group_id = #{groupId}
             </if>
             And message_type = #{messageType}

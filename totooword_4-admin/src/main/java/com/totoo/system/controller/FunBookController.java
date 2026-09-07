@@ -11,7 +11,6 @@ import com.totoo.system.domain.FunWord;
 import com.totoo.system.service.IFunBookWordService;
 import com.totoo.system.service.IFunUserBookService;
 import com.totoo.system.service.IFunWordService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.totoo.common.annotation.Log;

@@ -2,7 +2,7 @@
   <div class="chat-detail">
     <!-- 用户信息 -->
     <div v-if="isUser" class="user-info">
-      <el-avatar :src="item.item.avatar" class="avatar" />
+      <el-avatar :src="getImage(item.item.avatar)" class="avatar" />
       <div class="info">
         <h3>{{ item.item.nickName }}</h3>
         <p>用户名: {{ item.item.userName }}</p>
@@ -16,7 +16,7 @@
 
     <!-- 群聊信息 -->
     <div v-else class="group-info">
-      <el-avatar :src="item.item.avatarUrl" class="avatar" />
+      <el-avatar :src="getImage(item.item.avatarUrl)" class="avatar" />
       <div class="info">
         <h3>{{ item.item.groupName }}</h3>
 <!--        <p>群主: {{ item.item.createUserId }}</p>-->
@@ -44,6 +44,7 @@ import { computed } from 'vue';
 import {deleteFriend}from '@/api/functions/friend.js'
 import {deleteMember,listByGroupId}from '@/api/functions/groupMember.js'
 import GroupMemberList from './GroupMemberList.vue'
+import {getImage}from"@/api/functions/image.js"
 const props = defineProps({
   item: Object, // 传入的用户或群聊信息
 });

@@ -8,3 +8,9 @@ export function getGroupList() {
         params: ""
     })
 }
+export function getGroupById(id){
+    return request({
+        url: '/system/group/'+id,
+        method: 'get',
+    })
+}

@@ -1,7 +1,7 @@
 <template>
   <div class="friend-item" @click="$emit('click', friend)" @dblclick="$emit('dblclick', friend)">
     <!-- 头像 -->
-    <el-avatar :src="getImage(friend.avatar)" />
+    <el-avatar :src="friend.avatar" />
 
     <!-- 昵称 -->
     <div class="friend-info">
@@ -18,21 +18,11 @@
 </template>
 
 <script setup>
-import {getImage } from '@/api/functions/image';
-
 defineProps({
   friend: Object, // 好友信息
   type: String, // 类型（needToBeProcessed/awaited/passed）
 });
-// 获取用户头像
-const getAvatar = (url) => {
-  if (url.includes('http://') || url.includes('https://')) {
-    return url;
-  } else {
-    // 如果不包含http://或https://，则拼接完整的URL
-    return 'http://localhost/dev-api/' + url;
-  }
-};
+
 defineEmits(['accept', 'reject', 'click', 'dblclick']);
 </script>
 

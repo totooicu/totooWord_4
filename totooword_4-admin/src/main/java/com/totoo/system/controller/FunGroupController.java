@@ -4,10 +4,11 @@ import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 
 import com.totoo.common.core.domain.entity.SysUser;
+import com.totoo.common.utils.DateUtils;
 import com.totoo.system.domain.FunGroupMember;
 import com.totoo.system.service.IFunGroupMemberService;
 import com.totoo.system.service.ISysUserService;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,7 +50,7 @@ public class FunGroupController extends BaseController
     /**
      * 查询群组列表
      */
-    @PreAuthorize("@ss.hasPermi('system:group:list')")
+//    @PreAuthorize("@ss.hasPermi('system:group:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunGroup funGroup)
     {
@@ -61,7 +62,7 @@ public class FunGroupController extends BaseController
     /**
      * 导出群组列表
      */
-    @PreAuthorize("@ss.hasPermi('system:group:export')")
+//    @PreAuthorize("@ss.hasPermi('system:group:export')")
     @Log(title = "群组", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunGroup funGroup)
@@ -74,7 +75,7 @@ public class FunGroupController extends BaseController
     /**
      * 获取群组详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:group:query')")
+//    @PreAuthorize("@ss.hasPermi('system:group:query')")
     @GetMapping(value = "/{groupId}")
     public AjaxResult getInfo(@PathVariable("groupId") Long groupId)
     {
@@ -84,7 +85,7 @@ public class FunGroupController extends BaseController
     /**
      * 新增群组
      */
-    @PreAuthorize("@ss.hasPermi('system:group:add')")
+//    @PreAuthorize("@ss.hasPermi('system:group:add')")
     @Log(title = "群组", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunGroup funGroup)
@@ -92,10 +93,16 @@ public class FunGroupController extends BaseController
         return toAjax(funGroupService.insertFunGroup(funGroup));
     }
 
+    @PostMapping("/creatBySelf")
+    public AjaxResult creatBySelf(@RequestBody FunGroup funGroup)
+    {
+        funGroup.setCreateUserId(getUserId());funGroup.setCreateTime(DateUtils.getNowDate());
+        return toAjax(funGroupService.insertFunGroup(funGroup));
+    }
     /**
      * 修改群组
      */
-    @PreAuthorize("@ss.hasPermi('system:group:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:group:edit')")
     @Log(title = "群组", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunGroup funGroup)
@@ -106,7 +113,7 @@ public class FunGroupController extends BaseController
     /**
      * 删除群组
      */
-    @PreAuthorize("@ss.hasPermi('system:group:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:group:remove')")
     @Log(title = "群组", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{groupIds}")
     public AjaxResult remove(@PathVariable Long[] groupIds)

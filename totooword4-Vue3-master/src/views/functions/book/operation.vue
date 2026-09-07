@@ -179,15 +179,26 @@ const handleSave = async () => {
     try {
       newBookForm.value.language = lan.value;
       const newBookResponse = await addBook(newBookForm.value);
-      payload.savedBookId = newBookResponse.bookId;
-      await addsByBookWordsByBookIds_ByLogical(payload);
+      payload.savedBookId = newBookResponse.data.bookId;
+      await addsByBookWordsByBookIds_ByLogical(payload).then(() => {
+            console.log('新书本创建并保存成功');
+          },
+          (error) => {
+            console.error('创建新书本失败:', error);
+          }
+      );
       console.log('新书本创建并保存成功');
     } catch (error) {
       console.error('创建新书本失败:', error);
     }
   } else if (saveOption.value === 'append') {
     try {
-      await addsByBookWordsByBookIds_ByLogical(payload);
+      await addsByBookWordsByBookIds_ByLogical(payload).then(() => {
+            console.log('追加保存成功');
+          },
+          (error) => {
+            console.error('追加失败:', error);
+      });
       console.log('追加到现有书本成功');
     } catch (error) {
       console.error('追加到现有书本失败:', error);

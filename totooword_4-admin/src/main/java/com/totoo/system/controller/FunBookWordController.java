@@ -11,7 +11,6 @@ import com.totoo.system.domain.FunWordMsg;
 import com.totoo.system.mapper.FunWordMsgMapper;
 import com.totoo.system.service.IFunBookService;
 import com.totoo.system.service.IFunWordService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.totoo.common.annotation.Log;
@@ -45,7 +44,7 @@ public class FunBookWordController extends BaseController
     /**
      * 查询书本单词关联列表
      */
-    @PreAuthorize("@ss.hasPermi('system:word:list')")
+//    @PreAuthorize("@ss.hasPermi('system:word:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunBookWord funBookWord)
     {
@@ -57,7 +56,7 @@ public class FunBookWordController extends BaseController
     /**
      * 导出书本单词关联列表
      */
-    @PreAuthorize("@ss.hasPermi('system:word:export')")
+//    @PreAuthorize("@ss.hasPermi('system:word:export')")
     @Log(title = "书本单词关联", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunBookWord funBookWord)
@@ -70,7 +69,7 @@ public class FunBookWordController extends BaseController
     /**
      * 获取书本单词关联详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:word:query')")
+//    @PreAuthorize("@ss.hasPermi('system:word:query')")
     @GetMapping(value = "/{bookId}")
     public AjaxResult getInfo(@PathVariable("bookId") String bookId)
     {
@@ -193,7 +192,7 @@ public class FunBookWordController extends BaseController
     /**
      * 修改书本单词关联
      */
-    @PreAuthorize("@ss.hasPermi('system:word:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:word:edit')")
     @Log(title = "书本单词关联", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunBookWord funBookWord)
@@ -204,7 +203,7 @@ public class FunBookWordController extends BaseController
     /**
      * 删除书本单词关联
      */
-    @PreAuthorize("@ss.hasPermi('system:word:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:word:remove')")
     @Log(title = "书本单词关联", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{bookIds}")
     public AjaxResult remove(@PathVariable String[] bookIds)

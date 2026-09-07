@@ -50,6 +50,8 @@ const getUserOrGroup=(item)=>{
 
 // 获取头像
 const getAvatar = (item) => {
+  console.log(">>>getAvatar item",item)
+  if(item==null)return ""
   if (item.messageType==="1") {
     return item.group.avatarUrl || ''; // 群聊头像
   } else if (item.messageType==="0") {

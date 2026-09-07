@@ -8,7 +8,7 @@ import com.totoo.common.core.domain.entity.SysUser;
 import com.totoo.system.domain.FunChatMessage;
 import com.totoo.system.service.IFunChatMessageService;
 import com.totoo.system.service.ISysUserService;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.totoo.common.annotation.Log;
@@ -40,7 +40,7 @@ public class FunFriendController extends BaseController
     /**
      * 查询好友关系列表
      */
-    @PreAuthorize("@ss.hasPermi('system:friend:list')")
+//    @PreAuthorize("@ss.hasPermi('system:friend:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunFriend funFriend)
     {
@@ -95,7 +95,7 @@ put("passed",passedUsers); put("needToBeProcessed",needToBeProcessedUsers); put(
     /**
      * 导出好友关系列表
      */
-    @PreAuthorize("@ss.hasPermi('system:friend:export')")
+//    @PreAuthorize("@ss.hasPermi('system:friend:export')")
     @Log(title = "好友关系", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunFriend funFriend)
@@ -108,7 +108,7 @@ put("passed",passedUsers); put("needToBeProcessed",needToBeProcessedUsers); put(
     /**
      * 获取好友关系详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:friend:query')")
+//    @PreAuthorize("@ss.hasPermi('system:friend:query')")
     @GetMapping(value = "/{friendId}")
     public AjaxResult getInfo(@PathVariable("friendId") Long friendId)
     {
@@ -118,7 +118,7 @@ put("passed",passedUsers); put("needToBeProcessed",needToBeProcessedUsers); put(
     /**
      * 新增好友关系
      */
-    @PreAuthorize("@ss.hasPermi('system:friend:add')")
+//    @PreAuthorize("@ss.hasPermi('system:friend:add')")
     @Log(title = "好友关系", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunFriend funFriend)
@@ -132,7 +132,7 @@ put("passed",passedUsers); put("needToBeProcessed",needToBeProcessedUsers); put(
     /**
      * 修改好友关系
      */
-    @PreAuthorize("@ss.hasPermi('system:friend:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:friend:edit')")
     @Log(title = "好友关系", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunFriend funFriend)
@@ -143,7 +143,7 @@ put("passed",passedUsers); put("needToBeProcessed",needToBeProcessedUsers); put(
     /**
      * 删除好友关系
      */
-    @PreAuthorize("@ss.hasPermi('system:friend:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:friend:remove')")
     @Log(title = "好友关系", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{friendIds}")
     public AjaxResult remove(@PathVariable Long[] friendIds)

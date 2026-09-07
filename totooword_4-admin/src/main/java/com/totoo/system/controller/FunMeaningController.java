@@ -2,7 +2,7 @@ package com.totoo.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,7 @@ public class FunMeaningController extends BaseController
     /**
      * 查询单词含义列表
      */
-    @PreAuthorize("@ss.hasPermi('system:meaning:list')")
+//    @PreAuthorize("@ss.hasPermi('system:meaning:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunMeaning funMeaning)
     {
@@ -49,7 +49,7 @@ public class FunMeaningController extends BaseController
     /**
      * 导出单词含义列表
      */
-    @PreAuthorize("@ss.hasPermi('system:meaning:export')")
+//    @PreAuthorize("@ss.hasPermi('system:meaning:export')")
     @Log(title = "单词含义", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunMeaning funMeaning)
@@ -62,7 +62,7 @@ public class FunMeaningController extends BaseController
     /**
      * 获取单词含义详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:meaning:query')")
+//    @PreAuthorize("@ss.hasPermi('system:meaning:query')")
     @GetMapping(value = "/{wordId}")
     public AjaxResult getInfo(@PathVariable("wordId") String wordId)
     {
@@ -72,7 +72,7 @@ public class FunMeaningController extends BaseController
     /**
      * 新增单词含义
      */
-    @PreAuthorize("@ss.hasPermi('system:meaning:add')")
+//    @PreAuthorize("@ss.hasPermi('system:meaning:add')")
     @Log(title = "单词含义", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunMeaning funMeaning)
@@ -83,7 +83,7 @@ public class FunMeaningController extends BaseController
     /**
      * 修改单词含义
      */
-    @PreAuthorize("@ss.hasPermi('system:meaning:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:meaning:edit')")
     @Log(title = "单词含义", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunMeaning funMeaning)
@@ -94,7 +94,7 @@ public class FunMeaningController extends BaseController
     /**
      * 删除单词含义
      */
-    @PreAuthorize("@ss.hasPermi('system:meaning:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:meaning:remove')")
     @Log(title = "单词含义", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{wordIds}")
     public AjaxResult remove(@PathVariable String[] wordIds)

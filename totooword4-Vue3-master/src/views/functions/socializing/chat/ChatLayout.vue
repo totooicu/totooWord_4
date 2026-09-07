@@ -3,7 +3,7 @@
     <!-- 左部分 -->
     <div class="left-panel">
       <!-- 列表选择 -->
-      <ListSelector @select-list="handleListSelect" />
+      <ListSelector @select-list="handleListSelect" :selected-type="selectedListType"/>
       <!-- 列表内容 -->
       <ListContent
         :list-type="selectedListType"
@@ -115,10 +115,21 @@ const handleItemClick = async (item) => {
 
 // 处理列表项双击
 const handleItemDblClick = async (item) => {
+  console.log(">>>双击item ",item)
+  let messageType = item.groupId == null ? '0' : '1';
+  if(messageType==='0'){if(item.status!=="0")return;}else{
+    if(item.groupMembers==null) {
+      item.groupMembers=[(await getBySelfGroupId(item.groupId)).data]
+    }
+    if(item.groupMembers[0].role==="3"||item.groupMembers[0].role==="4")return;
+  }
+  selectedListType.value="message"
   currentClickedItem.value = item;
   count = 0;
-  let messageType = item.groupId == null ? '0' : '1';
+
   let fitter;
+
+
   if (messageType === '0') fitter={ messageType, receiverId: item.userId };
    else fitter={ messageType, groupId: item.groupId };
 
@@ -143,8 +154,9 @@ receiveMsg((newMsg) => {
   if(currentClickedItem.value==null){
     editMsgDataLastMessageId(newMsg,true);return;
   }
-  if ((newMsg.messageType === '0'&&newMsg.senderId === currentClickedItem.value.userId)
+  if ((newMsg.messageType === '0'&&(newMsg.senderId === currentClickedItem.value.userId||newMsg.receiverId===currentClickedItem.value.userId))
       || (newMsg.messageType === '1'&&newMsg.groupId === currentClickedItem.value.groupId)) {
+    chatWindowVisible.value=""
     chatWindowItem.value.data.messages.push(newMsg);
     console.log(">>>chatWindowItem.value:",chatWindowItem.value)
     watched({
@@ -152,6 +164,7 @@ receiveMsg((newMsg) => {
       "groupId":newMsg.groupId,
       "messageType":newMsg.messageType
     })
+    chatWindowVisible.value = 'ChatWindow';
   } else {
     editMsgDataLastMessageId(newMsg,true)
   }

@@ -9,7 +9,7 @@
         class="member-item"
       >
         <!-- 左边：用户头像 -->
-        <el-avatar :src="member.user.avatar" class="avatar" />
+        <el-avatar :src="getImage(member.user.avatar)" class="avatar" />
 
         <!-- 中间：用户名和成员角色 -->
         <div class="member-info">
@@ -35,6 +35,7 @@
 import { ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
 import {deleteMember} from '@/api/functions/groupMember.js'
+import {getImage}from "@/api/functions/image.js"
 const props = defineProps({
   groupMembers: {
     required: true,

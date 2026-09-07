@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 import com.totoo.system.domain.FunBookWord;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +42,7 @@ public class FunUserBookController extends BaseController
     /**
      * 查询用户收藏书本列表
      */
-    @PreAuthorize("@ss.hasPermi('system:book:list')")
+//    @PreAuthorize("@ss.hasPermi('system:book:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunUserBook funUserBook)
     {
@@ -54,7 +54,7 @@ public class FunUserBookController extends BaseController
     /**
      * 导出用户收藏书本列表
      */
-    @PreAuthorize("@ss.hasPermi('system:book:export')")
+//    @PreAuthorize("@ss.hasPermi('system:book:export')")
     @Log(title = "用户收藏书本", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunUserBook funUserBook)
@@ -67,7 +67,7 @@ public class FunUserBookController extends BaseController
     /**
      * 获取用户收藏书本详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:book:query')")
+//    @PreAuthorize("@ss.hasPermi('system:book:query')")
     @GetMapping(value = "/{userId}")
     public AjaxResult getInfo(@PathVariable("userId") Long userId)
     {
@@ -77,7 +77,7 @@ public class FunUserBookController extends BaseController
     /**
      * 新增用户收藏书本
      */
-    @PreAuthorize("@ss.hasPermi('system:book:add')")
+//    @PreAuthorize("@ss.hasPermi('system:book:add')")
     @Log(title = "用户收藏书本", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunUserBook funUserBook)
@@ -88,7 +88,7 @@ public class FunUserBookController extends BaseController
     /**
      * 修改用户收藏书本
      */
-    @PreAuthorize("@ss.hasPermi('system:book:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:book:edit')")
     @Log(title = "用户收藏书本", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunUserBook funUserBook)
@@ -99,7 +99,7 @@ public class FunUserBookController extends BaseController
     /**
      * 删除用户收藏书本
      */
-    @PreAuthorize("@ss.hasPermi('system:book:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:book:remove')")
     @Log(title = "用户收藏书本", businessType = BusinessType.DELETE)
 	@DeleteMapping("removeByUserIds/{userIds}")
     public AjaxResult removeByUserIds(@PathVariable Long[] userIds)

@@ -36,17 +36,13 @@ public class WordLemmatization {
 //                System.err.println("No sentences found in the input.");
                 continue; // 如果没有找到句子，跳过当前单词的处理
             }
-
             // 遍历句子中的每个单词，获取并打印词形还原结果
             for (CoreMap sentence : sentences) {
-
                 for (CoreMap token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                     String originalWord = token.get(CoreAnnotations.TextAnnotation.class);
                     String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
                     String lemma = token.get(CoreAnnotations.LemmaAnnotation.class);
-
                     ans[ii]=lemma;
-
                 }
             }
             ii+=1;

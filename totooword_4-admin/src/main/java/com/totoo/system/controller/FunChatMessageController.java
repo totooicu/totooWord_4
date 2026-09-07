@@ -11,7 +11,7 @@ import com.totoo.system.service.IFunFriendService;
 import com.totoo.system.service.IFunGroupMemberService;
 import com.totoo.system.service.IFunGroupService;
 import com.totoo.system.service.impl.SysUserServiceImpl;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,7 +54,7 @@ public class FunChatMessageController extends BaseController
     /**
      * 查询聊天消息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:message:list')")
+//    @PreAuthorize("@ss.hasPermi('system:message:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunChatMessage funChatMessage)
     {
@@ -66,7 +66,7 @@ public class FunChatMessageController extends BaseController
     /**
      * 导出聊天消息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:message:export')")
+//    @PreAuthorize("@ss.hasPermi('system:message:export')")
     @Log(title = "聊天消息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunChatMessage funChatMessage)
@@ -79,7 +79,7 @@ public class FunChatMessageController extends BaseController
     /**
      * 获取聊天消息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:message:query')")
+//    @PreAuthorize("@ss.hasPermi('system:message:query')")
     @GetMapping(value = "/{messageId}")
     public AjaxResult getInfo(@PathVariable("messageId") Long messageId)
     {
@@ -89,7 +89,7 @@ public class FunChatMessageController extends BaseController
     /**
      * 新增聊天消息
      */
-    @PreAuthorize("@ss.hasPermi('system:message:add')")
+//    @PreAuthorize("@ss.hasPermi('system:message:add')")
     @Log(title = "聊天消息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunChatMessage funChatMessage)
@@ -100,7 +100,7 @@ public class FunChatMessageController extends BaseController
     /**
      * 修改聊天消息
      */
-    @PreAuthorize("@ss.hasPermi('system:message:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:message:edit')")
     @Log(title = "聊天消息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunChatMessage funChatMessage)
@@ -108,10 +108,18 @@ public class FunChatMessageController extends BaseController
         return toAjax(funChatMessageService.updateFunChatMessage(funChatMessage));
     }
 
+    @GetMapping("/getLastMessage")
+    public AjaxResult getLastMessage( String type,Long id){//String type,Long id
+        System.out.println(">>>type id:"+type+" "+id+" "+getUserId());
+        FunChatMessage chatMessage=new FunChatMessage();
+        if(type.equals("1"))chatMessage.setGroupId(id).setMessageType("1");
+        else{chatMessage.setSenderId(id).setReceiverId(getUserId()).setMessageType("0");}
+        return AjaxResult.success( funChatMessageService.getLastMessageByChatMessageByUserIdOrGroupId(chatMessage));
+    }
     /**
      * 删除聊天消息
      */
-    @PreAuthorize("@ss.hasPermi('system:message:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:message:remove')")
     @Log(title = "聊天消息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{messageIds}")
     public AjaxResult remove(@PathVariable Long[] messageIds)

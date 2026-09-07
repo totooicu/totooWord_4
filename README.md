@@ -1,96 +1,285 @@
-<p align="center">
-	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
-</p>
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">RuoYi v3.8.8</h1>
-<h4 align="center">基于SpringBoot+Vue前后端分离的Java快速开发框架</h4>
-<p align="center">
-	<a href="https://gitee.com/y_project/RuoYi-Vue/stargazers"><img src="https://gitee.com/y_project/RuoYi-Vue/badge/star.svg?theme=dark"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Vue"><img src="https://img.shields.io/badge/RuoYi-v3.8.8-brightgreen.svg"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Vue/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
-</p>
+# TotooWord 4 — 单词记忆管理系统
 
-## 平台简介
+> 基于 [RuoYi](https://gitee.com/y_project/RuoYi-Vue) 二次开发的单词学习与记忆管理平台，提供单词书管理、间隔重复记忆、社交互动等功能。
 
-若依是一套全部开源的快速开发平台，毫无保留给个人及企业免费使用。
+---
 
-* 前端采用Vue、Element UI。
-* 后端采用Spring Boot、Spring Security、Redis & Jwt。
-* 权限认证使用Jwt，支持多终端认证系统。
-* 支持加载动态权限菜单，多方式轻松权限控制。
-* 高效率开发，使用代码生成器可以一键生成前后端代码。
-* 提供了技术栈（[Vue3](https://v3.cn.vuejs.org) [Element Plus](https://element-plus.org/zh-CN) [Vite](https://cn.vitejs.dev)）版本[RuoYi-Vue3](https://github.com/yangzongzhuan/RuoYi-Vue3)，保持同步更新。
-* 提供了单应用版本[RuoYi-Vue-fast](https://github.com/yangzongzhuan/RuoYi-Vue-fast)，Oracle版本[RuoYi-Vue-Oracle](https://github.com/yangzongzhuan/RuoYi-Vue-Oracle)，保持同步更新。
-* 不分离版本，请移步[RuoYi](https://gitee.com/y_project/RuoYi)，微服务版本，请移步[RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud)
-* 阿里云折扣场：[点我进入](http://aly.ruoyi.vip)，腾讯云秒杀场：[点我进入](http://txy.ruoyi.vip)&nbsp;&nbsp;
-* 阿里云优惠券：[点我领取](https://www.aliyun.com/minisite/goods?userCode=brki8iof&share_source=copy_link)，腾讯云优惠券：[点我领取](https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console)&nbsp;&nbsp;
+## 项目简介
+
+TotooWord 4 是一款面向英语学习者的 **单词记忆管理系统**。用户可以通过 Web 管理后台维护词库、单词书和学习阶段，移动端 APP / 小程序支持在线背单词、查看例句、练习发音，并内置间隔重复记忆算法帮助高效复习。系统同时集成了好友、群组、实时聊天等社交功能，让学习不再孤单。
+
+### 核心特性
+
+- **词库管理** — 单词、释义、发音、短语、词形变化、例句的全生命周期管理
+- **单词书 & 学习阶段** — 自定义单词书，按阶段组织学习内容
+- **间隔重复记忆** — 内置记忆算法（`MemorizeController`），科学安排复习计划
+- **社交互动** — 好友、群组、实时 WebSocket 聊天，学习打卡互相监督
+- **多端覆盖** — Web 管理后台 + UniApp 移动端（APP / H5 / 小程序）
+- **权限体系** — 基于 Spring Security + JWT 的 RBAC 权限控制
+- **若依内置能力** — 代码生成、定时任务、系统监控、Swagger 接口文档
+
+---
+
+## 演示截图
+
+### 移动端主界面
+
+| 首页 | 学习主页 | 学习卡片 |
+|:---:|:---:|:---:|
+| ![首页](imgs/main.png) | ![学习主页](imgs/studymain.png) | ![学习卡片](imgs/studycard.png) |
+
+### 单词书与搜索
+
+| 我的单词书 | 单词书详情 | 搜索 |
+|:---:|:---:|:---:|
+| ![我的单词书](imgs/mybook.png) | ![单词书详情](imgs/lookbookwords.png) | ![搜索](imgs/search.png) |
+
+### 社交功能
+
+| 社交列表 |消息展示|
+|:---:|:---:|
+| ![社交列表](imgs/sociallists.png) | ![图表列表](imgs/chatlist.png) |
+
+### 数据分析
+
+| 书籍分析（折线图） | 书籍分析（散点图） |
+|:---:|:---:|
+| ![书籍分析折线图](imgs/analysebooks_line.png) | ![书籍分析散点图](imgs/analysebooks_scatter.png) |
+
+| 单词分析（柱状图） | 单词分析（饼图） |
+|:---:|:---:|
+| ![单词分析柱状图](imgs/analysewords_bar.png) | ![单词分析饼图](imgs/ananlysewords_pie.png) |
+
+---
+
+## 技术栈
+
+### 后端
+
+| 技术 | 版本 | 说明 |
+|------|------|------|
+| Java | 1.8 | 运行环境 |
+| Spring Boot | 2.5.15 | 应用框架 |
+| Spring Security | 5.7.12 | 安全框架 |
+| MyBatis | — | ORM |
+| MySQL | 5.7+ | 主数据库 |
+| Redis | — | 缓存 / Token / WebSocket |
+| Druid | 1.2.23 | 数据库连接池 |
+| JWT | 0.9.1 | 令牌认证 |
+| Swagger | 3.0.0 | 接口文档 |
+| PageHelper | 1.4.7 | 分页 |
+| WebSocket | — | 实时通信 |
+
+### Web 管理前端
+
+| 技术 | 版本 |
+|------|------|
+| Vue | 3.4.0 |
+| Element Plus | 2.4.3 |
+| Vite | 5.0.4 |
+| Pinia | 2.1.7 |
+| Vue Router | 4.2.5 |
+| Axios | 0.27.2 |
+| ECharts | 5.4.3 |
+
+### 移动端
+
+| 技术 | 说明 |
+|------|------|
+| UniApp | 一份代码多端适配（APP / H5 / 小程序） |
+| uni-ui | 全端兼容 UI 组件库 |
+| Pinia | 状态管理 |
+
+---
+
+## 项目结构
+
+```
+TotooWord_4/
+├── pom.xml                               # Maven 根配置
+├── sql/                                  # 数据库初始化脚本
+│   ├── totooworld.sql                   # 业务表（单词、记忆、社交等）
+│   ├── ry_20240629.sql                  # RuoYi 系统基础表
+│   └── quartz.sql                       # 定时任务表
+│
+├── totooword_4-admin/                   # 后端 · 启动模块
+│   └── src/main/
+│       ├── java/com/totoo/
+│       │   └── system/controller/       # 业务 Controller
+│       │       ├── FunBookController
+│       │       ├── FunWordController
+│       │       ├── FunMemorizedController
+│       │       ├── FunFriendController
+│       │       ├── FunGroupController
+│       │       ├── FunChatMessageController
+│       │       ├── MyWebSocketController
+│       │       └── ...
+│       └── resources/
+│           ├── application.yml          # 主配置
+│           ├── application-druid.yml    # 数据源配置
+│           └── mapper/                  # MyBatis XML
+│
+├── totooword_4-framework/               # 后端 · 框架核心（Security、拦截器等）
+├── totooword_4-common/                  # 后端 · 通用工具与基础实体
+├── totooword_4-system/                  # 后端 · 系统管理模块
+├── totooword_4-quartz/                  # 后端 · 定时任务模块
+├── totooword_4-generator/               # 后端 · 代码生成模块
+├── totooword_4-base/                    # 后端 · 基础预留模块
+│
+├── totooword4-Vue3-master/              # Web 管理前端（Vue3 + Element Plus）
+│   ├── src/api/                         # API 请求
+│   ├── src/views/                       # 页面视图
+│   ├── src/components/                  # 公共组件
+│   └── .env.development                 # 开发环境变量
+│
+└── RuoYi-App-master/                    # 移动端（UniApp）
+    ├── api/                             # 接口封装
+    ├── pages/                           # 页面
+    │   ├── index.vue                    # 首页
+    │   ├── work/index.vue               # 工作台 / 背单词
+    │   ├── login.vue
+    │   └── mine/                        # 我的（资料、设置等）
+    ├── config.js                        # 服务器地址配置
+    ├── pages.json                       # 路由与 tabBar
+    └── manifest.json                    # 应用配置
+```
+
+---
+
+## 快速开始
+
+### 1. 环境准备
+
+| 依赖 | 版本要求 |
+|------|---------|
+| JDK | 1.8 |
+| Maven | 3.6+ |
+| MySQL | 5.7 / 8.0 |
+| Redis | 5.0+ |
+| Node.js | 16+（建议 18 LTS） |
+| HBuilderX | 最新版（用于 UniApp 移动端） |
+
+### 2. 初始化数据库
+
+在 MySQL 中创建数据库并依次执行以下脚本：
+
+```sql
+CREATE DATABASE IF NOT EXISTS totooword4 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE totooword4;
+
+-- 依次导入（注意顺序）
+SOURCE sql/ry_20240629.sql;     -- 若依系统基础表
+SOURCE sql/quartz.sql;          -- 定时任务表
+SOURCE sql/totooworld.sql;      -- TotooWord 业务表
+```
+
+### 3. 修改后端配置
+
+编辑 `totooword_4-admin/src/main/resources/application-druid.yml`：
+
+```yaml
+master:
+  url: jdbc:mysql://localhost:3306/totooword4?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+  username: root
+  password: <你的数据库密码>
+```
+
+编辑 `application.yml` 中的 Redis 配置（如需要）：
+
+```yaml
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password: <你的Redis密码>   # 无密码则留空
+```
+
+### 4. 启动后端
+
+```bash
+# 在项目根目录执行 Maven 构建
+mvn clean install -DskipTests
+
+# 进入启动模块运行（端口 8080）
+cd totooword_4-admin
+mvn spring-boot:run
+```
+
+后端启动后：
+- Swagger 接口文档：http://localhost:8080/swagger-ui/index.html
+- Druid 监控台：http://localhost:8080/druid （默认账号 `ruoyi` / `123456`）
+
+### 5. 启动 Web 管理前端
+
+```bash
+cd totooword4-Vue3-master
+
+# 安装依赖
+npm install --registry=https://registry.npmmirror.com
+
+# 开发模式启动（Vite 默认 http://localhost:80）
+npm run dev
+```
+
+开发环境默认通过 Vite 代理将 `/dev-api` 请求转发到 `http://localhost:8080`。
+
+### 6. 运行移动端
+
+推荐使用 **HBuilderX** 打开 `RuoYi-App-master` 目录：
+
+1. 修改 `RuoYi-App-master/config.js` 中的服务器地址，指向你的后端：
+   ```js
+   const baseUrl = 'http://localhost:8080'
+   ```
+2. HBuilderX → 运行 → 运行到浏览器（H5） / 运行到手机或模拟器 / 运行到小程序模拟器
+
+---
 
 ## 内置功能
 
-1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
-2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
-3.  岗位管理：配置系统用户所属担任职务。
-4.  菜单管理：配置系统菜单，操作权限，按钮权限标识等。
-5.  角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
-6.  字典管理：对系统中经常使用的一些较为固定的数据进行维护。
-7.  参数管理：对系统动态配置常用参数。
-8.  通知公告：系统通知公告信息发布维护。
-9.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-10. 登录日志：系统登录日志记录查询包含登录异常。
-11. 在线用户：当前系统中活跃用户状态监控。
-12. 定时任务：在线（添加、修改、删除)任务调度包含执行结果日志。
-13. 代码生成：前后端代码的生成（java、html、xml、sql）支持CRUD下载 。
-14. 系统接口：根据业务代码自动生成相关的api接口文档。
-15. 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。
-16. 缓存监控：对系统的缓存信息查询，命令统计等。
-17. 在线构建器：拖动表单元素生成相应的HTML代码。
-18. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
+### 若依平台基础能力
 
-## 在线体验
+- 用户管理、部门管理、岗位管理、角色管理、菜单权限
+- 字典管理、参数配置、通知公告
+- 操作日志、登录日志、在线用户监控
+- 定时任务调度、代码生成器
+- 服务监控、缓存监控、连接池监视
 
-- admin/admin123  
-- 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
+### TotooWord 业务扩展
 
-演示地址：http://vue.ruoyi.vip  
-文档地址：http://doc.ruoyi.vip
+| 模块 | 说明 |
+|------|------|
+| 单词书管理 | 创建/维护单词书，按等级或主题分类 |
+| 单词管理 | 单词、音标、释义、短语、词形变化、例句 |
+| 学习阶段 | 将单词书划分为多个学习单元 |
+| 记忆记录 | 跟踪每个用户的学习进度和已掌握单词 |
+| 记忆配置 | 用户自定义每日学习量、复习策略 |
+| 间隔重复算法 | 根据遗忘曲线智能安排复习 |
+| 好友系统 | 添加好友、查看学习动态 |
+| 群组系统 | 创建学习小组、群成员管理 |
+| 实时聊天 | WebSocket 即时消息、消息列表 |
+| 单词消息 | 单词消息推送与提醒 |
 
-## 演示图
+---
 
-<table>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/cd1f90be5f2684f4560c9519c0f2a232ee8.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/1cbcf0e6f257c7d3a063c0e3f2ff989e4b3.jpg"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-8074972883b5ba0622e13246738ebba237a.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-9f88719cdfca9af2e58b352a20e23d43b12.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-39bf2584ec3a529b0d5a3b70d15c9b37646.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-936ec82d1f4872e1bc980927654b6007307.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-b2d62ceb95d2dd9b3fbe157bb70d26001e9.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-d67451d308b7a79ad6819723396f7c3d77a.png"/></td>
-    </tr>	 
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/5e8c387724954459291aafd5eb52b456f53.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/644e78da53c2e92a95dfda4f76e6d117c4b.jpg"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-8370a0d02977eebf6dbf854c8450293c937.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-49003ed83f60f633e7153609a53a2b644f7.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-d4fe726319ece268d4746602c39cffc0621.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-c195234bbcd30be6927f037a6755e6ab69c.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/b6115bc8c31de52951982e509930b20684a.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-5e4daac0bb59612c5038448acbcef235e3a.png"/></td>
-    </tr>
-</table>
+## 默认账号
 
+| 系统 | 用户名 | 密码 |
+|------|--------|------|
+| 若依后台 | admin | admin123 |
+| Druid 监控台 | ruoyi | 123456 |
+| Swagger | — | 公开访问 |
 
-## 若依前后端分离交流群
+---
 
-QQ群： [![加入QQ群](https://img.shields.io/badge/已满-937441-blue.svg)](https://jq.qq.com/?_wv=1027&k=5bVB1og) [![加入QQ群](https://img.shields.io/badge/已满-887144332-blue.svg)](https://jq.qq.com/?_wv=1027&k=5eiA4DH) [![加入QQ群](https://img.shields.io/badge/已满-180251782-blue.svg)](https://jq.qq.com/?_wv=1027&k=5AxMKlC) [![加入QQ群](https://img.shields.io/badge/已满-104180207-blue.svg)](https://jq.qq.com/?_wv=1027&k=51G72yr) [![加入QQ群](https://img.shields.io/badge/已满-186866453-blue.svg)](https://jq.qq.com/?_wv=1027&k=VvjN2nvu) [![加入QQ群](https://img.shields.io/badge/已满-201396349-blue.svg)](https://jq.qq.com/?_wv=1027&k=5vYAqA05) [![加入QQ群](https://img.shields.io/badge/已满-101456076-blue.svg)](https://jq.qq.com/?_wv=1027&k=kOIINEb5) [![加入QQ群](https://img.shields.io/badge/已满-101539465-blue.svg)](https://jq.qq.com/?_wv=1027&k=UKtX5jhs) [![加入QQ群](https://img.shields.io/badge/已满-264312783-blue.svg)](https://jq.qq.com/?_wv=1027&k=EI9an8lJ) [![加入QQ群](https://img.shields.io/badge/已满-167385320-blue.svg)](https://jq.qq.com/?_wv=1027&k=SWCtLnMz) [![加入QQ群](https://img.shields.io/badge/已满-104748341-blue.svg)](https://jq.qq.com/?_wv=1027&k=96Dkdq0k) [![加入QQ群](https://img.shields.io/badge/已满-160110482-blue.svg)](https://jq.qq.com/?_wv=1027&k=0fsNiYZt) [![加入QQ群](https://img.shields.io/badge/已满-170801498-blue.svg)](https://jq.qq.com/?_wv=1027&k=7xw4xUG1) [![加入QQ群](https://img.shields.io/badge/已满-108482800-blue.svg)](https://jq.qq.com/?_wv=1027&k=eCx8eyoJ) [![加入QQ群](https://img.shields.io/badge/已满-101046199-blue.svg)](https://jq.qq.com/?_wv=1027&k=SpyH2875) [![加入QQ群](https://img.shields.io/badge/已满-136919097-blue.svg)](https://jq.qq.com/?_wv=1027&k=tKEt51dz) [![加入QQ群](https://img.shields.io/badge/已满-143961921-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=0vBbSb0ztbBgVtn3kJS-Q4HUNYwip89G&authKey=8irq5PhutrZmWIvsUsklBxhj57l%2F1nOZqjzigkXZVoZE451GG4JHPOqW7AW6cf0T&noverify=0&group_code=143961921) [![加入QQ群](https://img.shields.io/badge/已满-174951577-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ZFAPAbp09S2ltvwrJzp7wGlbopsc0rwi&authKey=HB2cxpxP2yspk%2Bo3WKTBfktRCccVkU26cgi5B16u0KcAYrVu7sBaE7XSEqmMdFQp&noverify=0&group_code=174951577) [![加入QQ群](https://img.shields.io/badge/已满-161281055-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=Fn2aF5IHpwsy8j6VlalNJK6qbwFLFHat&authKey=uyIT%2B97x2AXj3odyXpsSpVaPMC%2Bidw0LxG5MAtEqlrcBcWJUA%2FeS43rsF1Tg7IRJ&noverify=0&group_code=161281055) [![加入QQ群](https://img.shields.io/badge/已满-138988063-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=XIzkm_mV2xTsUtFxo63bmicYoDBA6Ifm&authKey=dDW%2F4qsmw3x9govoZY9w%2FoWAoC4wbHqGal%2BbqLzoS6VBarU8EBptIgPKN%2FviyC8j&noverify=0&group_code=138988063) [![加入QQ群](https://img.shields.io/badge/151450850-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=DkugnCg68PevlycJSKSwjhFqfIgrWWwR&authKey=pR1Pa5lPIeGF%2FFtIk6d%2FGB5qFi0EdvyErtpQXULzo03zbhopBHLWcuqdpwY241R%2F&noverify=0&group_code=151450850) 点击按钮入群。
+## 许可证
+
+本项目基于 [MIT License](LICENSE) 开源，继承自 RuoYi 框架的开源协议。
+
+---
+
+## 致谢
+
+- [RuoYi](https://gitee.com/y_project/RuoYi-Vue) — 快速开发框架
+- [DCloud UniApp](https://uniapp.dcloud.net.cn/) — 跨端移动框架
+- [Element Plus](https://element-plus.org/) — Vue3 组件库

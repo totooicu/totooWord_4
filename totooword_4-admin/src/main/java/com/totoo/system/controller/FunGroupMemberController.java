@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.totoo.system.service.impl.SysUserServiceImpl;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.totoo.common.annotation.Log;
@@ -36,7 +36,7 @@ public class FunGroupMemberController extends BaseController
     /**
      * 查询群组成员列表
      */
-    @PreAuthorize("@ss.hasPermi('system:member:list')")
+//    @PreAuthorize("@ss.hasPermi('system:member:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunGroupMember funGroupMember)
     {
@@ -48,7 +48,7 @@ public class FunGroupMemberController extends BaseController
     /**
      * 导出群组成员列表
      */
-    @PreAuthorize("@ss.hasPermi('system:member:export')")
+//    @PreAuthorize("@ss.hasPermi('system:member:export')")
     @Log(title = "群组成员", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunGroupMember funGroupMember)
@@ -61,7 +61,7 @@ public class FunGroupMemberController extends BaseController
     /**
      * 获取群组成员详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:member:query')")
+//    @PreAuthorize("@ss.hasPermi('system:member:query')")
     @GetMapping(value = "/{memberId}")
     public AjaxResult getInfo(@PathVariable("memberId") Long memberId)
     {
@@ -71,7 +71,7 @@ public class FunGroupMemberController extends BaseController
     /**
      * 新增群组成员
      */
-    @PreAuthorize("@ss.hasPermi('system:member:add')")
+//    @PreAuthorize("@ss.hasPermi('system:member:add')")
     @Log(title = "群组成员", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunGroupMember funGroupMember)
@@ -84,7 +84,7 @@ public class FunGroupMemberController extends BaseController
     /**
      * 修改群组成员
      */
-    @PreAuthorize("@ss.hasPermi('system:member:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:member:edit')")
     @Log(title = "群组成员", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunGroupMember funGroupMember)
@@ -104,7 +104,7 @@ public class FunGroupMemberController extends BaseController
     /**
      * 删除群组成员
      */
-    @PreAuthorize("@ss.hasPermi('system:member:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:member:remove')")
     @Log(title = "群组成员", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{memberIds}")
     public AjaxResult remove(@PathVariable Long[] memberIds)

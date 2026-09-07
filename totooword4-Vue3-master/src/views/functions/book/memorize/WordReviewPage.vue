@@ -34,7 +34,7 @@
 
           <div class="progress-indicator">
             学习进度：<el-progress
-              :percentage="learningProgress"
+              :percentage="parseInt( learningProgress)"
               :stroke-width="12"
               :color="progressColor"
           />

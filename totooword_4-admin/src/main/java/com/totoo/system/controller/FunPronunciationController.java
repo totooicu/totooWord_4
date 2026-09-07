@@ -37,7 +37,7 @@ public class FunPronunciationController extends BaseController
     /**
      * 查询单词发音列表
      */
-    @PreAuthorize("@ss.hasPermi('system:pronunciation:list')")
+//    @PreAuthorize("@ss.hasPermi('system:pronunciation:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunPronunciation funPronunciation)
     {
@@ -49,7 +49,7 @@ public class FunPronunciationController extends BaseController
     /**
      * 导出单词发音列表
      */
-    @PreAuthorize("@ss.hasPermi('system:pronunciation:export')")
+//    @PreAuthorize("@ss.hasPermi('system:pronunciation:export')")
     @Log(title = "单词发音", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunPronunciation funPronunciation)
@@ -62,7 +62,7 @@ public class FunPronunciationController extends BaseController
     /**
      * 获取单词发音详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:pronunciation:query')")
+//    @PreAuthorize("@ss.hasPermi('system:pronunciation:query')")
     @GetMapping(value = "/{wordId}")
     public AjaxResult getInfo(@PathVariable("wordId") String wordId)
     {
@@ -72,7 +72,7 @@ public class FunPronunciationController extends BaseController
     /**
      * 新增单词发音
      */
-    @PreAuthorize("@ss.hasPermi('system:pronunciation:add')")
+//    @PreAuthorize("@ss.hasPermi('system:pronunciation:add')")
     @Log(title = "单词发音", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunPronunciation funPronunciation)
@@ -83,7 +83,7 @@ public class FunPronunciationController extends BaseController
     /**
      * 修改单词发音
      */
-    @PreAuthorize("@ss.hasPermi('system:pronunciation:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:pronunciation:edit')")
     @Log(title = "单词发音", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunPronunciation funPronunciation)
@@ -94,7 +94,7 @@ public class FunPronunciationController extends BaseController
     /**
      * 删除单词发音
      */
-    @PreAuthorize("@ss.hasPermi('system:pronunciation:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:pronunciation:remove')")
     @Log(title = "单词发音", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{wordIds}")
     public AjaxResult remove(@PathVariable String[] wordIds)

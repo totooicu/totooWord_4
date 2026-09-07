@@ -19,7 +19,7 @@
             <!-- 对方头像 -->
             <el-avatar
                 v-if="!isSelf(message.senderId)"
-                :src="( getAvatar(message.senderId))"
+                :src="getImage( getAvatar(message.senderId))"
                 class="avatar"
             />
             <!-- 消息内容 -->
@@ -31,7 +31,7 @@
             <!-- 自己头像 -->
             <el-avatar
                 v-if="isSelf(message.senderId)"
-                :src="( getAvatar(message.senderId))"
+                :src="getImage( getAvatar(message.senderId))"
                 class="avatar"
             />
           </div>
@@ -55,6 +55,7 @@
 import { ref, computed, watch } from 'vue';
 import { ElText } from 'element-plus';
 import {sendMsg} from '@/api/functions/webSocket.js'
+import {getImage}from"@/api/functions/image.js"
 let obj
 const props = defineProps({
   item: Object, // 传入的群或好友信息
@@ -132,7 +133,7 @@ const getAvatar = (userId) => {
     const user = props.item.data.otherUsers.find((u) => u.userId === userId);
     url= user ? user.avatar : '';
   }
-
+  if(url==null)return ""
   if (url.includes('http://') || url.includes('https://')) {
     return url;
   } else {

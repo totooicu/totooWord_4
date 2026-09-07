@@ -37,7 +37,7 @@ public class FunPhraseController extends BaseController
     /**
      * 查询单词短语列表
      */
-    @PreAuthorize("@ss.hasPermi('system:phrase:list')")
+//    @PreAuthorize("@ss.hasPermi('system:phrase:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunPhrase funPhrase)
     {
@@ -49,7 +49,7 @@ public class FunPhraseController extends BaseController
     /**
      * 导出单词短语列表
      */
-    @PreAuthorize("@ss.hasPermi('system:phrase:export')")
+//    @PreAuthorize("@ss.hasPermi('system:phrase:export')")
     @Log(title = "单词短语", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunPhrase funPhrase)
@@ -62,7 +62,7 @@ public class FunPhraseController extends BaseController
     /**
      * 获取单词短语详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:phrase:query')")
+//    @PreAuthorize("@ss.hasPermi('system:phrase:query')")
     @GetMapping(value = "/{wordId}")
     public AjaxResult getInfo(@PathVariable("wordId") String wordId)
     {
@@ -72,7 +72,7 @@ public class FunPhraseController extends BaseController
     /**
      * 新增单词短语
      */
-    @PreAuthorize("@ss.hasPermi('system:phrase:add')")
+//    @PreAuthorize("@ss.hasPermi('system:phrase:add')")
     @Log(title = "单词短语", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunPhrase funPhrase)
@@ -83,7 +83,7 @@ public class FunPhraseController extends BaseController
     /**
      * 修改单词短语
      */
-    @PreAuthorize("@ss.hasPermi('system:phrase:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:phrase:edit')")
     @Log(title = "单词短语", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunPhrase funPhrase)
@@ -94,7 +94,7 @@ public class FunPhraseController extends BaseController
     /**
      * 删除单词短语
      */
-    @PreAuthorize("@ss.hasPermi('system:phrase:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:phrase:remove')")
     @Log(title = "单词短语", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{wordIds}")
     public AjaxResult remove(@PathVariable String[] wordIds)

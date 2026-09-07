@@ -50,6 +50,7 @@ export default {
 
     watch(selectedLanguage, (newselectedValue) => {
       emit('update:selectedLanguage', newselectedValue); // 使用 emit 发射事件
+      console.log('emit selectedLanguage changed:', newselectedValue)
     });
 
     return {

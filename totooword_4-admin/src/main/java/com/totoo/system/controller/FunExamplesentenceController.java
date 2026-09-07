@@ -2,7 +2,7 @@ package com.totoo.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,7 @@ public class FunExamplesentenceController extends BaseController
     /**
      * 查询单词例句列表
      */
-    @PreAuthorize("@ss.hasPermi('system:examplesentence:list')")
+//    @PreAuthorize("@ss.hasPermi('system:examplesentence:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunExamplesentence funExamplesentence)
     {
@@ -49,7 +49,7 @@ public class FunExamplesentenceController extends BaseController
     /**
      * 导出单词例句列表
      */
-    @PreAuthorize("@ss.hasPermi('system:examplesentence:export')")
+//    @PreAuthorize("@ss.hasPermi('system:examplesentence:export')")
     @Log(title = "单词例句", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunExamplesentence funExamplesentence)
@@ -62,7 +62,7 @@ public class FunExamplesentenceController extends BaseController
     /**
      * 获取单词例句详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:examplesentence:query')")
+//    @PreAuthorize("@ss.hasPermi('system:examplesentence:query')")
     @GetMapping(value = "/{wordId}")
     public AjaxResult getInfo(@PathVariable("wordId") String wordId)
     {
@@ -72,7 +72,7 @@ public class FunExamplesentenceController extends BaseController
     /**
      * 新增单词例句
      */
-    @PreAuthorize("@ss.hasPermi('system:examplesentence:add')")
+//    @PreAuthorize("@ss.hasPermi('system:examplesentence:add')")
     @Log(title = "单词例句", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunExamplesentence funExamplesentence)
@@ -83,7 +83,7 @@ public class FunExamplesentenceController extends BaseController
     /**
      * 修改单词例句
      */
-    @PreAuthorize("@ss.hasPermi('system:examplesentence:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:examplesentence:edit')")
     @Log(title = "单词例句", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunExamplesentence funExamplesentence)
@@ -94,7 +94,7 @@ public class FunExamplesentenceController extends BaseController
     /**
      * 删除单词例句
      */
-    @PreAuthorize("@ss.hasPermi('system:examplesentence:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:examplesentence:remove')")
     @Log(title = "单词例句", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{wordIds}")
     public AjaxResult remove(@PathVariable String[] wordIds)

@@ -14,7 +14,11 @@
 import { ref } from 'vue';
 import RadioGroupComponent from "@/views/functions/components/selector/RadioGroupComponent.vue";
 const selectedType = ref('message');
-
+const props = defineProps({selectedType:String})
+//watch props.selectedType
+watch(() => props.selectedType, (newValue) => {
+  selectedType.value = newValue;
+});
 const emit = defineEmits(['select-list']);
 let options = [{
   label: '消息列表',

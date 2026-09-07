@@ -2,7 +2,7 @@ package com.totoo.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,7 @@ public class FunWordController extends BaseController
     /**
      * 查询单词基本信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:word:list')")
+//    @PreAuthorize("@ss.hasPermi('system:word:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunWord funWord)
     {
@@ -49,7 +49,7 @@ public class FunWordController extends BaseController
     /**
      * 导出单词基本信息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:word:export')")
+//    @PreAuthorize("@ss.hasPermi('system:word:export')")
     @Log(title = "单词基本信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunWord funWord)
@@ -62,7 +62,7 @@ public class FunWordController extends BaseController
     /**
      * 获取单词基本信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:word:query')")
+//    @PreAuthorize("@ss.hasPermi('system:word:query')")
     @GetMapping(value = "/{wordId}")
     public AjaxResult getInfo(@PathVariable("wordId") String wordId)
     {
@@ -72,7 +72,7 @@ public class FunWordController extends BaseController
     /**
      * 新增单词基本信息
      */
-    @PreAuthorize("@ss.hasPermi('system:word:add')")
+//    @PreAuthorize("@ss.hasPermi('system:word:add')")
     @Log(title = "单词基本信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunWord funWord)
@@ -83,7 +83,7 @@ public class FunWordController extends BaseController
     /**
      * 修改单词基本信息
      */
-    @PreAuthorize("@ss.hasPermi('system:word:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:word:edit')")
     @Log(title = "单词基本信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunWord funWord)
@@ -94,7 +94,7 @@ public class FunWordController extends BaseController
     /**
      * 删除单词基本信息
      */
-    @PreAuthorize("@ss.hasPermi('system:word:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:word:remove')")
     @Log(title = "单词基本信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{wordIds}")
     public AjaxResult remove(@PathVariable String[] wordIds)

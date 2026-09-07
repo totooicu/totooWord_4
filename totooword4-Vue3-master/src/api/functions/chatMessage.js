@@ -7,7 +7,13 @@ export function listByChatMessageBySelfUserIdOrGroupId(data){
 data: data
     })
 }
-
+export function getLastMessage(data){
+    return request({
+        url: '/system/message/getLastMessage',
+        method: 'post',
+        data: data
+    })
+}
 export function sendMessage(data){
 return request({
     url: '/system/message/sendMessage',

@@ -110,7 +110,7 @@ const handleNextWord = async (isCorrect) => {
     const newData = Object.values(scores).map(score => ({
       wordId: score.wordId,
       isCorrect: score.isCorrect,
-      score: score.score
+      score: parseInt(score.score)
     }));
 
     console.log("newData",newData)

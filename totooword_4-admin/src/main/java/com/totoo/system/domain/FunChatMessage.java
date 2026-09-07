@@ -138,27 +138,30 @@ public class FunChatMessage extends BaseEntity
     {
         return messageId;
     }
-    public void setSenderId(Long senderId) 
+    public FunChatMessage setSenderId(Long senderId)
     {
         this.senderId = senderId;
+        return this ;
     }
 
     public Long getSenderId() 
     {
         return senderId;
     }
-    public void setReceiverId(Long receiverId) 
+    public FunChatMessage setReceiverId(Long receiverId)
     {
         this.receiverId = receiverId;
+        return this ;
     }
 
     public Long getReceiverId() 
     {
         return receiverId;
     }
-    public void setGroupId(Long groupId) 
+    public FunChatMessage setGroupId(Long groupId)
     {
         this.groupId = groupId;
+        return this ;
     }
 
     public Long getGroupId() 

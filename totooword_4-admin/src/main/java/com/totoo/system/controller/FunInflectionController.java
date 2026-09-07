@@ -2,7 +2,7 @@ package com.totoo.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,7 @@ public class FunInflectionController extends BaseController
     /**
      * 查询单词时态变形列表
      */
-    @PreAuthorize("@ss.hasPermi('system:inflection:list')")
+//    @PreAuthorize("@ss.hasPermi('system:inflection:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunInflection funInflection)
     {
@@ -49,7 +49,7 @@ public class FunInflectionController extends BaseController
     /**
      * 导出单词时态变形列表
      */
-    @PreAuthorize("@ss.hasPermi('system:inflection:export')")
+//    @PreAuthorize("@ss.hasPermi('system:inflection:export')")
     @Log(title = "单词时态变形", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunInflection funInflection)
@@ -62,7 +62,7 @@ public class FunInflectionController extends BaseController
     /**
      * 获取单词时态变形详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:inflection:query')")
+//    @PreAuthorize("@ss.hasPermi('system:inflection:query')")
     @GetMapping(value = "/{wordId}")
     public AjaxResult getInfo(@PathVariable("wordId") String wordId)
     {
@@ -72,7 +72,7 @@ public class FunInflectionController extends BaseController
     /**
      * 新增单词时态变形
      */
-    @PreAuthorize("@ss.hasPermi('system:inflection:add')")
+//    @PreAuthorize("@ss.hasPermi('system:inflection:add')")
     @Log(title = "单词时态变形", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunInflection funInflection)
@@ -83,7 +83,7 @@ public class FunInflectionController extends BaseController
     /**
      * 修改单词时态变形
      */
-    @PreAuthorize("@ss.hasPermi('system:inflection:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:inflection:edit')")
     @Log(title = "单词时态变形", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunInflection funInflection)
@@ -94,7 +94,7 @@ public class FunInflectionController extends BaseController
     /**
      * 删除单词时态变形
      */
-    @PreAuthorize("@ss.hasPermi('system:inflection:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:inflection:remove')")
     @Log(title = "单词时态变形", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{wordIds}")
     public AjaxResult remove(@PathVariable String[] wordIds)

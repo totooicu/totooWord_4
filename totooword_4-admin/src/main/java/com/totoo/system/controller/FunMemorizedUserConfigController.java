@@ -2,7 +2,7 @@ package com.totoo.system.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,7 @@ public class FunMemorizedUserConfigController extends BaseController
     /**
      * 查询用户学习配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:config:list')")
+//    @PreAuthorize("@ss.hasPermi('system:config:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunMemorizedUserConfig funMemorizedUserConfig)
     {
@@ -49,7 +49,7 @@ public class FunMemorizedUserConfigController extends BaseController
     /**
      * 导出用户学习配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:config:export')")
+//    @PreAuthorize("@ss.hasPermi('system:config:export')")
     @Log(title = "用户学习配置", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunMemorizedUserConfig funMemorizedUserConfig)
@@ -62,7 +62,7 @@ public class FunMemorizedUserConfigController extends BaseController
     /**
      * 获取用户学习配置详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:config:query')")
+//    @PreAuthorize("@ss.hasPermi('system:config:query')")
     @GetMapping(value = "/{userId}")
     public AjaxResult getInfo(@PathVariable("userId") Long userId)
     {
@@ -87,7 +87,7 @@ public class FunMemorizedUserConfigController extends BaseController
     /**
      * 新增用户学习配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:add')")
+//    @PreAuthorize("@ss.hasPermi('system:config:add')")
     @Log(title = "用户学习配置", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunMemorizedUserConfig funMemorizedUserConfig)
@@ -109,7 +109,7 @@ public class FunMemorizedUserConfigController extends BaseController
     /**
      * 删除用户学习配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:config:remove')")
     @Log(title = "用户学习配置", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{userIds}")
     public AjaxResult remove(@PathVariable Long[] userIds)

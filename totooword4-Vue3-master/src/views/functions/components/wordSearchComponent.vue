@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="10" style="display: flex; align-items: center;">
     <el-col :span="2">
-      <LanguageSelector :selectedLanguage="selectedLanguage"  />
+      <LanguageSelector  v-model:selectedLanguage="selectedLanguage"  />
     </el-col>
     <el-col :span="20">
       <el-input v-model="spell" clearable placeholder="Enter word"></el-input>
@@ -26,6 +26,12 @@ export default {
   methods: {
     searchWord() {
       this.$emit('search', { language: this.selectedLanguage, spell: this.spell });
+    }
+  },
+  //watch selectedLanguage
+  watch: {
+    selectedLanguage(newValue) {
+      console.log('wordSearchComponent selectedLanguage changed:', newValue);
     }
   }
 };

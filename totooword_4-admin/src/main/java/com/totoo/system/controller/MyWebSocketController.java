@@ -1,6 +1,7 @@
 package com.totoo.system.controller;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.totoo.common.core.domain.entity.SysUser;
 import com.totoo.common.core.domain.model.LoginUser;
 import com.totoo.framework.web.service.TokenService;
 import com.totoo.system.domain.FunChatMessage;
@@ -9,6 +10,7 @@ import com.totoo.system.domain.WebSocketResult;
 import com.totoo.system.service.IFunChatMessageService;
 import com.totoo.system.service.IFunGroupMemberService;
 import com.totoo.system.service.IFunMessageListService;
+import com.totoo.system.service.ISysUserService;
 import com.totoo.system.tool.StringOP;
 import org.apache.logging.log4j.message.MapMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ public class MyWebSocketController extends TextWebSocketHandler {
     private static IFunGroupMemberService funGroupMemberService;
 //    private static IFunMessageListService funMessageListService;
     private static TokenService tokenService;
+    private static ISysUserService sysUserService;
     @Autowired
     public void setFunChatMessageService(IFunChatMessageService funChatMessageService) {
         MyWebSocketController.funChatMessageService = funChatMessageService;
@@ -42,6 +45,10 @@ public class MyWebSocketController extends TextWebSocketHandler {
     @Autowired
     public void setFunGroupMemberService(IFunGroupMemberService funGroupMemberService) {
         MyWebSocketController.funGroupMemberService = funGroupMemberService;
+    }
+    @Autowired
+    public void setSysUserService(ISysUserService sysUserService) {
+        MyWebSocketController.sysUserService = sysUserService;
     }
 //    @Autowired
 //    public void setFunMessageListService(IFunMessageListService funMessageListService) {
@@ -155,8 +162,11 @@ public class MyWebSocketController extends TextWebSocketHandler {
         System.out.println(">>>pushMessage>>>funChatMessage:"+funChatMessage);
         System.out.println(">>>pushMessage>>>sessions.get(funChatMessage.getSenderId())!=null:"+(sessions.get(funChatMessage.getSenderId())!=null));
         if(Objects.equals(funChatMessage.getMessageType(), "0")){//好友私聊
-            if(sessions.get(funChatMessage.getReceiverId())!=null)
-                send(sessions.get(funChatMessage.getReceiverId()),"pushMsg",funChatMessage);
+            funChatMessage.setSender( sysUserService.selectUserById(funChatMessage.getSenderId()));
+            funChatMessage.setReceiver( sysUserService.selectUserById(funChatMessage.getReceiverId()));
+            if(sessions.get(funChatMessage.getReceiverId())!=null) {
+                send(sessions.get(funChatMessage.getReceiverId()), "pushMsg", funChatMessage);
+            }
                 send(sessions.get(funChatMessage.getSenderId()),"pushMsg",funChatMessage);
         }else{//群聊
             FunGroupMember funGroupMember=new FunGroupMember();funGroupMember.setGroupId(funChatMessage.getGroupId());

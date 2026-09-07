@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.totoo.common.core.domain.entity.SysUser;
 import com.totoo.system.domain.*;
 import com.totoo.system.service.*;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,7 +50,7 @@ public class FunMessageListController extends BaseController
     /**
      * 查询消息列列表
      */
-    @PreAuthorize("@ss.hasPermi('system:list:list')")
+//    @PreAuthorize("@ss.hasPermi('system:list:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunMessageList funMessageList)
     {
@@ -62,7 +62,7 @@ public class FunMessageListController extends BaseController
     /**
      * 导出消息列列表
      */
-    @PreAuthorize("@ss.hasPermi('system:list:export')")
+//    @PreAuthorize("@ss.hasPermi('system:list:export')")
     @Log(title = "消息列", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunMessageList funMessageList)
@@ -75,7 +75,7 @@ public class FunMessageListController extends BaseController
     /**
      * 获取消息列详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:list:query')")
+//    @PreAuthorize("@ss.hasPermi('system:list:query')")
     @GetMapping(value = "/{listId}")
     public AjaxResult getInfo(@PathVariable("listId") Long listId)
     {
@@ -85,7 +85,7 @@ public class FunMessageListController extends BaseController
     /**
      * 新增消息列
      */
-    @PreAuthorize("@ss.hasPermi('system:list:add')")
+//    @PreAuthorize("@ss.hasPermi('system:list:add')")
     @Log(title = "消息列", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunMessageList funMessageList)
@@ -96,7 +96,7 @@ public class FunMessageListController extends BaseController
     /**
      * 修改消息列
      */
-    @PreAuthorize("@ss.hasPermi('system:list:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:list:edit')")
     @Log(title = "消息列", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunMessageList funMessageList)
@@ -107,7 +107,7 @@ public class FunMessageListController extends BaseController
     /**
      * 删除消息列
      */
-    @PreAuthorize("@ss.hasPermi('system:list:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:list:remove')")
     @Log(title = "消息列", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{listIds}")
     public AjaxResult remove(@PathVariable Long[] listIds)
@@ -130,7 +130,7 @@ public class FunMessageListController extends BaseController
         List<FunFriend> friends = funFriendService.selectFunFriendListByUserId(getUserId());//获取我的好友
         System.out.println(">>>friends:"+friends);
         for(FunFriend friend:friends) {//添加好友最新消息
-            FunChatMessage chatMessage = new FunChatMessage();chatMessage.setSenderId(getUserId());chatMessage.setReceiverId(friend.getFriendId());chatMessage.setMessageType("0");
+            FunChatMessage chatMessage = new FunChatMessage();chatMessage.setSenderId(friend.getUserId1());chatMessage.setReceiverId(friend.getUserId2());chatMessage.setMessageType("0");
             chatMessageList.add(funChatMessageService.getLastMessageByChatMessageByUserIdOrGroupId(chatMessage));
         }
         chatMessageList.removeIf(Objects::isNull); //将空元素都删除
@@ -154,6 +154,9 @@ public class FunMessageListController extends BaseController
             System.out.println(">>>group2:"+funChatMessageService.getLastMessageByChatMessageByUserIdOrGroupId(chatMessage));
             chatMessageList.add(funChatMessageService.getLastMessageByChatMessageByUserIdOrGroupId(chatMessage));
         }
+
+
+
         return AjaxResult.success(chatMessageList);
     }
 }

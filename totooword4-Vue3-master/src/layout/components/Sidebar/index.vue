@@ -37,7 +37,8 @@ const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
 const sidebarRouters =  computed(() => permissionStore.sidebarRouters);
-const showLogo = computed(() => settingsStore.sidebarLogo);
+// const showLogo = computed(() => settingsStore.sidebarLogo);
+const showLogo = false
 const sideTheme = computed(() => settingsStore.sideTheme);
 const theme = computed(() => settingsStore.theme);
 const isCollapse = computed(() => !appStore.sidebar.opened);

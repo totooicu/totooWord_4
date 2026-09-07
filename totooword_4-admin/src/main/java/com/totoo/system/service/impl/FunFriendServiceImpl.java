@@ -93,11 +93,11 @@ public class FunFriendServiceImpl implements IFunFriendService
     }
     @Override
     public List<FunFriend> selectFunFriendListByUserId(Long userId) {
-        FunFriend funFriend = new FunFriend();funFriend.setUserId1(userId);
-        List<FunFriend> funFriends = new ArrayList<>();
-    funFriends.addAll(funFriendMapper.selectFunFriendList(funFriend));
-    funFriend.setUserId2(userId);funFriend.setUserId1(null);
-    funFriends.addAll(funFriendMapper.selectFunFriendList(funFriend));
+        FunFriend funFriend = new FunFriend();
+        funFriend.setUserId1(userId);
+        List<FunFriend> funFriends = new ArrayList<>(funFriendMapper.selectFunFriendList(funFriend));
+        funFriend.setUserId2(userId);funFriend.setUserId1(null);
+        funFriends.addAll(funFriendMapper.selectFunFriendList(funFriend));
         return funFriends;
     }
 }

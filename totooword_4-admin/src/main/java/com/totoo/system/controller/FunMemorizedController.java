@@ -15,7 +15,7 @@ import com.totoo.system.service.IFunBookWordService;
 import com.totoo.system.service.IFunMemorizedUserConfigService;
 import com.totoo.system.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -60,7 +60,7 @@ public class FunMemorizedController extends BaseController
     /**
      * 查询单词记忆跟踪列表
      */
-    @PreAuthorize("@ss.hasPermi('system:memorized:list')")
+//    @PreAuthorize("@ss.hasPermi('system:memorized:list')")
     @GetMapping("/list")
     public TableDataInfo list(FunMemorized funMemorized)
     {
@@ -78,7 +78,7 @@ public class FunMemorizedController extends BaseController
     /**
      * 导出单词记忆跟踪列表
      */
-    @PreAuthorize("@ss.hasPermi('system:memorized:export')")
+//    @PreAuthorize("@ss.hasPermi('system:memorized:export')")
     @Log(title = "单词记忆跟踪", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, FunMemorized funMemorized)
@@ -91,7 +91,7 @@ public class FunMemorizedController extends BaseController
     /**
      * 获取单词记忆跟踪详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:memorized:query')")
+//    @PreAuthorize("@ss.hasPermi('system:memorized:query')")
     @GetMapping(value = "/{userId}")
     public AjaxResult getInfo(@PathVariable("userId") Long userId)
     {
@@ -101,7 +101,7 @@ public class FunMemorizedController extends BaseController
     /**
      * 新增单词记忆跟踪
      */
-    @PreAuthorize("@ss.hasPermi('system:memorized:add')")
+//    @PreAuthorize("@ss.hasPermi('system:memorized:add')")
     @Log(title = "单词记忆跟踪", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody FunMemorized funMemorized)
@@ -112,7 +112,7 @@ public class FunMemorizedController extends BaseController
     /**
      * 修改单词记忆跟踪
      */
-    @PreAuthorize("@ss.hasPermi('system:memorized:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:memorized:edit')")
     @Log(title = "单词记忆跟踪", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody FunMemorized funMemorized)
@@ -123,7 +123,7 @@ public class FunMemorizedController extends BaseController
     /**
      * 删除单词记忆跟踪
      */
-    @PreAuthorize("@ss.hasPermi('system:memorized:remove')")
+//    @PreAuthorize("@ss.hasPermi('system:memorized:remove')")
     @Log(title = "单词记忆跟踪", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{userIds}")
     public AjaxResult remove(@PathVariable Long[] userIds)
@@ -181,7 +181,7 @@ public class FunMemorizedController extends BaseController
     @GetMapping("/getTodayReviewWordBySelf")
     public AjaxResult getTodayReviewWordBySelf() {
 
-        if(redisService.getCheckinPattern(SecurityUtils.getUserId().toString(), "review"))return AjaxResult.warn("今日已打卡");
+        if(redisService.todayCheckin(SecurityUtils.getUserId().toString()))return AjaxResult.warn("今日已打卡");
 
         FunMemorizedUserConfig funMemorizedUserConfig = funMemorizedUserConfigService.selectFunMemorizedUserConfigByUserId(SecurityUtils.getUserId());
         Integer bookId = funMemorizedUserConfig.getCurrentBookId();
@@ -199,16 +199,16 @@ public class FunMemorizedController extends BaseController
             //如果复习时间小于1天则不复习
             if (LocalDate.now().equals(funMemorizedWordMsg.getMemorized().getLastStudyTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) continue;            oldWordMsgList1.add(funMemorizedWordMsg);
         }
-        oldWordMsgList1.sort( (o1, o2) -> {return (int) (o1.getScore()-o2.getScore());});
+        oldWordMsgList1.sort( (o1, o2) -> {return (o1.getScore()>o2.getScore()?-1:1);});
 
         return AjaxResult.success(new HashMap<String,Object>(){{
-            put("MemorizedWordMsgList",oldWordMsgList1.subList(0,Math.min(oldWordMsgList1.size(),funMemorizedUserConfig.getDailyReviewGoal())));
+            put("MemorizedWordMsgList",oldWordMsgList1.subList(0,Math.min(oldWordMsgList1.size(),funMemorizedUserConfig.getDailyLearningGoal())));
             put("timestamp",System.currentTimeMillis());
         }});
     }
     @GetMapping("/getTodayNewWordBySelf")
     public AjaxResult getTodayNewWordBySelf() {
-        if(redisService.getCheckinPattern(SecurityUtils.getUserId().toString(), "learnNew"))return AjaxResult.warn("今日已打卡");
+        if(redisService.todayCheckin(SecurityUtils.getUserId().toString()))return AjaxResult.warn("今日已打卡");
         FunMemorizedUserConfig funMemorizedUserConfig = funMemorizedUserConfigService.selectFunMemorizedUserConfigByUserId(SecurityUtils.getUserId());
         Integer bookId = funMemorizedUserConfig.getCurrentBookId();
         Map<String, Object> rst= (Map<String, Object>) listWordMsgsByBookWordByBookIdAndListWordMsgsByMemorizedByWordIdsByBookWordByBookId(String.valueOf(bookId)).get(AjaxResult.DATA_TAG);
@@ -232,7 +232,9 @@ public class FunMemorizedController extends BaseController
     public AjaxResult updataStudayDataBySelfWordId(@RequestBody Map<String, Object> data) {
         String pattern= (String) data.get("pattern");
         System.out.println(">>>updataStudayDataBySelfWordId>>>pattern"+pattern);
-        if(redisService.setCheckinPattern(String.valueOf(SecurityUtils.getUserId()),pattern)){
+
+        if(!redisService.todayCheckin(String.valueOf(SecurityUtils.getUserId()))){
+            redisService.checkin(String.valueOf(SecurityUtils.getUserId()));
             FunMemorizedUserConfig funMemorizedUserConfig=funMemorizedUserConfigService.selectFunMemorizedUserConfigByUserId(SecurityUtils.getUserId());
             funMemorizedUserConfig.setTotalCheckinDays((int) (funMemorizedUserConfig.getTotalCheckinDays()+1));
             funMemorizedUserConfigService.updateFunMemorizedUserConfig(funMemorizedUserConfig);
@@ -258,6 +260,7 @@ public class FunMemorizedController extends BaseController
                 funMemorized.setConsecutiveCorrect(0L);
                 funMemorized.setConsecutiveError(funMemorized.getConsecutiveError()+1);
             }
+            System.out.println(">>>updataStudayDataBySelfWordId>>>scoreClass "+score.get("score").getClass());
             if(score.get("score")!=null)funMemorized.setLastScore(((Integer) score.get("score")).longValue());
             System.out.println(">>>updataStudayDataBySelfWordId>>>funMemorized"+funMemorized);
             if(funMemorizedList.size()>0) funMemorizedService.updateFunMemorized(funMemorized);
