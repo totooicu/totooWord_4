@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunWordMsgMapper">
+
+    <resultMap id="BaseResultMap" type="FunWordMsg">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <id property="spell" column="spell" jdbcType="VARCHAR"/>
+        <result property="lan" column="lan" jdbcType="OTHER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+
+    </sql>
+
+
+</mapper>

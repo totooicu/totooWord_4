@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunMemorizedMapper">
+
+    <resultMap type="FunMemorized" id="FunMemorizedResult">
+        <result property="userId"    column="user_id"    />
+        <result property="wordId"    column="word_id"    />
+        <result property="lastStudyTime"    column="last_study_time"    />
+        <result property="totalStudyCount"    column="total_study_count"    />
+        <result property="consecutiveCorrect"    column="consecutive_correct"    />
+        <result property="masteryLevel"    column="mastery_level"    />
+        <result property="lastScore"    column="last_score"    />
+        <result property="consecutiveError"    column="consecutive_error"    />
+        <result property="spellData"    column="spell_data"    />
+    </resultMap>
+
+    <sql id="selectFunMemorizedVo">
+        select user_id, word_id, last_study_time, total_study_count, consecutive_correct, mastery_level, last_score, consecutive_error, spell_data from fun_memorized
+    </sql>
+
+    <select id="selectFunMemorizedList" parameterType="FunMemorized" resultMap="FunMemorizedResult">
+        <include refid="selectFunMemorizedVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="wordId != null "> and word_id = #{wordId}</if>
+            <if test="totalStudyCount != null "> and total_study_count = #{totalStudyCount}</if>
+            <if test="consecutiveCorrect != null  and consecutiveCorrect != ''"> and consecutive_correct = #{consecutiveCorrect}</if>
+            <if test="masteryLevel != null "> and mastery_level = #{masteryLevel}</if>
+            <if test="lastScore != null "> and last_score = #{lastScore}</if>
+            <if test="consecutiveError != null "> and consecutive_error = #{consecutiveError}</if>
+            <if test="spellData != null  and spellData != ''"> and spell_data = #{spellData}</if>
+        </where>
+    </select>
+
+    <select id="selectFunMemorizedByUserId" parameterType="Long" resultMap="FunMemorizedResult">
+        <include refid="selectFunMemorizedVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertFunMemorized" parameterType="FunMemorized">
+        insert into fun_memorized
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="wordId != null">word_id,</if>
+            <if test="lastStudyTime != null">last_study_time,</if>
+            <if test="totalStudyCount != null">total_study_count,</if>
+            <if test="consecutiveCorrect != null and consecutiveCorrect != ''">consecutive_correct,</if>
+            <if test="masteryLevel != null">mastery_level,</if>
+            <if test="lastScore != null">last_score,</if>
+            <if test="consecutiveError != null">consecutive_error,</if>
+            <if test="spellData != null">spell_data,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="wordId != null">#{wordId},</if>
+            <if test="lastStudyTime != null">#{lastStudyTime},</if>
+            <if test="totalStudyCount != null">#{totalStudyCount},</if>
+            <if test="consecutiveCorrect != null and consecutiveCorrect != ''">#{consecutiveCorrect},</if>
+            <if test="masteryLevel != null">#{masteryLevel},</if>
+            <if test="lastScore != null">#{lastScore},</if>
+            <if test="consecutiveError != null">#{consecutiveError},</if>
+            <if test="spellData != null">#{spellData},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFunMemorized" parameterType="FunMemorized">
+        update fun_memorized
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lastStudyTime != null">last_study_time = #{lastStudyTime},</if>
+            <if test="totalStudyCount != null">total_study_count = #{totalStudyCount},</if>
+            <if test="consecutiveCorrect != null and consecutiveCorrect != ''">consecutive_correct = #{consecutiveCorrect},</if>
+            <if test="masteryLevel != null">mastery_level = #{masteryLevel},</if>
+            <if test="lastScore != null">last_score = #{lastScore},</if>
+            <if test="consecutiveError != null">consecutive_error = #{consecutiveError},</if>
+            <if test="spellData != null">spell_data = #{spellData},</if>
+        </trim>
+        where user_id = #{userId} and word_id = #{wordId}
+    </update>
+
+    <delete id="deleteFunMemorizedByUserId" parameterType="Long">
+        delete from fun_memorized where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteFunMemorizedByUserIds" parameterType="String">
+        delete from fun_memorized where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

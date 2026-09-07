@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunStageMapper">
+    
+    <resultMap type="FunStage" id="FunStageResult">
+        <result property="wordId"    column="word_id"    />
+        <result property="stageText"    column="stage_text"    />
+    </resultMap>
+
+    <sql id="selectFunStageVo">
+        select word_id, stage_text from fun_stage
+    </sql>
+
+    <select id="selectFunStageList" parameterType="FunStage" resultMap="FunStageResult">
+        <include refid="selectFunStageVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectFunStageByWordId" parameterType="String" resultMap="FunStageResult">
+        <include refid="selectFunStageVo"/>
+        where word_id = #{wordId}
+    </select>
+
+    <insert id="insertFunStage" parameterType="FunStage">
+        insert into fun_stage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">word_id,</if>
+            <if test="stageText != null">stage_text,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">#{wordId},</if>
+            <if test="stageText != null">#{stageText},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunStage" parameterType="FunStage">
+        update fun_stage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stageText != null">stage_text = #{stageText},</if>
+        </trim>
+        where word_id = #{wordId}
+    </update>
+
+    <delete id="deleteFunStageByWordId" parameterType="String">
+        delete from fun_stage where word_id = #{wordId}
+    </delete>
+
+    <delete id="deleteFunStageByWordIds" parameterType="String">
+        delete from fun_stage where word_id in 
+        <foreach item="wordId" collection="array" open="(" separator="," close=")">
+            #{wordId}
+        </foreach>
+    </delete>
+</mapper>

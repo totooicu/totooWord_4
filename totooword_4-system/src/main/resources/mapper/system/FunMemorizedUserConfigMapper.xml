@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunMemorizedUserConfigMapper">
+    
+    <resultMap type="FunMemorizedUserConfig" id="FunMemorizedUserConfigResult">
+        <result property="userId"    column="user_id"    />
+        <result property="currentBookId"    column="current_book_id"    />
+        <result property="totalCheckinDays"    column="total_checkin_days"    />
+        <result property="dailyLearningGoal"    column="daily_learning_goal"    />
+    </resultMap>
+
+    <sql id="selectFunMemorizedUserConfigVo">
+        select * from fun_memorized_user_config
+    </sql>
+
+    <select id="selectFunMemorizedUserConfigList" parameterType="FunMemorizedUserConfig" resultMap="FunMemorizedUserConfigResult">
+        <include refid="selectFunMemorizedUserConfigVo"/>
+        <where>  
+            <if test="currentBookId != null "> and current_book_id = #{currentBookId}</if>
+            <if test="totalCheckinDays != null "> and total_checkin_days = #{totalCheckinDays}</if>
+            <if test="dailyLearningGoal != null "> and daily_learning_goal = #{dailyLearningGoal}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunMemorizedUserConfigByUserId" parameterType="Long" resultMap="FunMemorizedUserConfigResult">
+        <include refid="selectFunMemorizedUserConfigVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertFunMemorizedUserConfig" parameterType="FunMemorizedUserConfig">
+        insert into fun_memorized_user_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="currentBookId != null">current_book_id,</if>
+            <if test="totalCheckinDays != null">total_checkin_days,</if>
+            <if test="dailyLearningGoal != null">daily_learning_goal,</if>
+            <if test="dailyReviewGoal != null">daily_review_goal,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="currentBookId != null">#{currentBookId},</if>
+            <if test="totalCheckinDays != null">#{totalCheckinDays},</if>
+            <if test="dailyLearningGoal != null">#{dailyLearningGoal},</if>
+            <if test="dailyReviewGoal != null">#{dailyReviewGoal},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunMemorizedUserConfig" parameterType="FunMemorizedUserConfig">
+        update fun_memorized_user_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="currentBookId != null">current_book_id = #{currentBookId},</if>
+            <if test="totalCheckinDays != null">total_checkin_days = #{totalCheckinDays},</if>
+            <if test="dailyLearningGoal != null">daily_learning_goal = #{dailyLearningGoal},</if>
+            <if test="dailyReviewGoal != null">daily_review_goal = #{dailyReviewGoal},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteFunMemorizedUserConfigByUserId" parameterType="Long">
+        delete from fun_memorized_user_config where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteFunMemorizedUserConfigByUserIds" parameterType="String">
+        delete from fun_memorized_user_config where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

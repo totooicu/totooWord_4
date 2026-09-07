@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunWordMapper">
+    
+    <resultMap type="FunWord" id="FunWordResult">
+        <result property="wordId"    column="word_id"    />
+        <result property="spell"    column="spell"    />
+        <result property="language"    column="language"    />
+    </resultMap>
+
+    <sql id="selectFunWordVo">
+        select word_id, spell, language from fun_word
+    </sql>
+
+    <select id="selectFunWordList" parameterType="FunWord" resultMap="FunWordResult">
+        <include refid="selectFunWordVo"/>
+        <where>  
+            <if test="spell != null  and spell != ''"> and spell = #{spell}</if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunWordByWordId" parameterType="String" resultMap="FunWordResult">
+        <include refid="selectFunWordVo"/>
+        where word_id = #{wordId}
+    </select>
+
+    <insert id="insertFunWord" parameterType="FunWord" useGeneratedKeys="true" keyProperty="wordId">
+        insert into fun_word
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="spell != null and spell != ''">spell,</if>
+            <if test="language != null and language != ''">language,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="spell != null and spell != ''">#{spell},</if>
+            <if test="language != null and language != ''">#{language},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunWord" parameterType="FunWord">
+        update fun_word
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="spell != null and spell != ''">spell = #{spell},</if>
+            <if test="language != null and language != ''">language = #{language},</if>
+        </trim>
+        where word_id = #{wordId}
+    </update>
+
+    <delete id="deleteFunWordByWordId" parameterType="String">
+        delete from fun_word where word_id = #{wordId}
+    </delete>
+
+    <delete id="deleteFunWordByWordIds" parameterType="String">
+        delete from fun_word where word_id in 
+        <foreach item="wordId" collection="array" open="(" separator="," close=")">
+            #{wordId}
+        </foreach>
+    </delete>
+</mapper>

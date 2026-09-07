@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunBookWordMapper">
+
+    <resultMap type="FunBookWord" id="FunBookWordResult">
+        <result property="bookId"    column="book_id"    />
+        <result property="wordId"    column="word_id"    />
+        <result property="annotation"    column="annotation"    />
+        <result property="addTime"    column="add_time"    />
+    </resultMap>
+
+    <sql id="selectFunBookWordVo">
+        select book_id, word_id, annotation, add_time from fun_book_word
+    </sql>
+
+    <select id="selectFunBookWordList" parameterType="FunBookWord" resultMap="FunBookWordResult">
+        <include refid="selectFunBookWordVo"/>
+        <where>
+            <if test="bookId != null  and bookId != ''"> and book_id = #{bookId}</if>
+            <if test="wordId != null  and wordId != ''"> and word_id = #{wordId}</if>
+            <if test="annotation != null  and annotation != ''"> and annotation = #{annotation}</if>
+            <if test="addTime != null "> and add_time = #{addTime}</if>
+        </where>
+    </select>
+
+    <select id="selectFunBookWordByBookId" parameterType="String" resultMap="FunBookWordResult">
+        <include refid="selectFunBookWordVo"/>
+        where book_id = #{bookId}
+    </select>
+
+    <insert id="insertFunBookWord" parameterType="FunBookWord">
+        insert into fun_book_word
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bookId != null">book_id,</if>
+            <if test="wordId != null">word_id,</if>
+            <if test="annotation != null and annotation != ''">annotation,</if>
+            <if test="addTime != null">add_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bookId != null">#{bookId},</if>
+            <if test="wordId != null">#{wordId},</if>
+            <if test="annotation != null and annotation != ''">#{annotation},</if>
+            <if test="addTime != null">#{addTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFunBookWord" parameterType="FunBookWord">
+        update fun_book_word
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wordId != null">word_id = #{wordId},</if>
+            <if test="annotation != null and annotation != ''">annotation = #{annotation},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+        </trim>
+        where book_id = #{bookId}
+    </update>
+
+    <delete id="deleteFunBookWordByBookId" parameterType="String">
+        delete from fun_book_word where book_id = #{bookId}
+    </delete>
+
+    <delete id="deleteFunBookWordByBookIds" parameterType="String">
+        delete from fun_book_word where book_id in
+        <foreach item="bookId" collection="array" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+    </delete>
+
+    <select id="searchBookIdsByWordIdSelf" resultType="int">
+        SELECT bw.book_id
+        FROM fun_book_word bw
+                 JOIN fun_book b ON bw.book_id = b.book_id
+        WHERE bw.word_id = #{wordId}
+          AND b.owner_id = #{userId}
+    </select>
+</mapper>

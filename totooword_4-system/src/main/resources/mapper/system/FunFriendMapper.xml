@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunFriendMapper">
+    
+    <resultMap type="FunFriend" id="FunFriendResult">
+        <result property="friendId"    column="friend_id"    />
+        <result property="userId1"    column="user_id1"    />
+        <result property="userId2"    column="user_id2"    />
+        <result property="latestMessageId"    column="latest_message_id"    />
+        <result property="status"    column="status"    />
+        <result property="actionTime"    column="action_time"    />
+    </resultMap>
+
+    <sql id="selectFunFriendVo">
+        select friend_id, user_id1, user_id2, latest_message_id, status, action_time from fun_friend
+    </sql>
+
+    <select id="selectFunFriendList" parameterType="FunFriend" resultMap="FunFriendResult">
+        <include refid="selectFunFriendVo"/>
+        <where>  
+            <if test="userId1 != null "> and user_id1 = #{userId1}</if>
+            <if test="userId2 != null "> and user_id2 = #{userId2}</if>
+            <if test="latestMessageId != null "> and latest_message_id = #{latestMessageId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="actionTime != null "> and action_time = #{actionTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunFriendByFriendId" parameterType="Long" resultMap="FunFriendResult">
+        <include refid="selectFunFriendVo"/>
+        where friend_id = #{friendId}
+    </select>
+
+    <insert id="insertFunFriend" parameterType="FunFriend" useGeneratedKeys="true" keyProperty="friendId">
+        insert into fun_friend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId1 != null">user_id1,</if>
+            <if test="userId2 != null">user_id2,</if>
+            <if test="latestMessageId != null">latest_message_id,</if>
+            <if test="status != null">status,</if>
+            <if test="actionTime != null">action_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId1 != null">#{userId1},</if>
+            <if test="userId2 != null">#{userId2},</if>
+            <if test="latestMessageId != null">#{latestMessageId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="actionTime != null">#{actionTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunFriend" parameterType="FunFriend">
+        update fun_friend
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId1 != null">user_id1 = #{userId1},</if>
+            <if test="userId2 != null">user_id2 = #{userId2},</if>
+            <if test="latestMessageId != null">latest_message_id = #{latestMessageId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="actionTime != null">action_time = #{actionTime},</if>
+        </trim>
+        where friend_id = #{friendId}
+    </update>
+
+    <delete id="deleteFunFriendByFriendId" parameterType="Long">
+        delete from fun_friend where friend_id = #{friendId}
+    </delete>
+
+    <delete id="deleteFunFriendByFriendIds" parameterType="String">
+        delete from fun_friend where friend_id in 
+        <foreach item="friendId" collection="array" open="(" separator="," close=")">
+            #{friendId}
+        </foreach>
+    </delete>
+</mapper>

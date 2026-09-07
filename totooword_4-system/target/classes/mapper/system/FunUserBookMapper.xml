@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunUserBookMapper">
+
+    <resultMap type="FunUserBook" id="FunUserBookResult">
+        <result property="userId"    column="user_id"    />
+        <result property="bookId"    column="book_id"    />
+        <result property="collectionTime"    column="collection_time"    />
+        <result property="collectionNote"    column="collection_note"    />
+        <result property="isOwned"    column="is_owned"    />
+        <result property="acquisitionMethod"    column="acquisition_method"    />
+    </resultMap>
+
+    <sql id="selectFunUserBookVo">
+        select user_id, book_id, collection_time, collection_note, is_owned, acquisition_method from fun_user_book
+    </sql>
+
+    <select id="selectFunUserBookList" parameterType="FunUserBook" resultMap="FunUserBookResult">
+        <include refid="selectFunUserBookVo"/>
+        <where>
+            <if test="collectionTime != null "> and collection_time = #{collectionTime}</if>
+            <if test="collectionNote != null  and collectionNote != ''"> and collection_note = #{collectionNote}</if>
+            <if test="isOwned != null "> and is_owned = #{isOwned}</if>
+            <if test="acquisitionMethod != null  and acquisitionMethod != ''"> and acquisition_method = #{acquisitionMethod}</if>
+        </where>
+    </select>
+
+    <select id="selectFunUserBookListByUserId" parameterType="Long" resultMap="FunUserBookResult">
+        <include refid="selectFunUserBookVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertFunUserBook" parameterType="FunUserBook">
+        insert into fun_user_book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="bookId != null">book_id,</if>
+            <if test="collectionTime != null">collection_time,</if>
+            <if test="collectionNote != null">collection_note,</if>
+            <if test="isOwned != null">is_owned,</if>
+            <if test="acquisitionMethod != null">acquisition_method,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="bookId != null">#{bookId},</if>
+            <if test="collectionTime != null">#{collectionTime},</if>
+            <if test="collectionNote != null">#{collectionNote},</if>
+            <if test="isOwned != null">#{isOwned},</if>
+            <if test="acquisitionMethod != null">#{acquisitionMethod},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFunUserBook" parameterType="FunUserBook">
+        update fun_user_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bookId != null">book_id = #{bookId},</if>
+            <if test="collectionTime != null">collection_time = #{collectionTime},</if>
+            <if test="collectionNote != null">collection_note = #{collectionNote},</if>
+            <if test="isOwned != null">is_owned = #{isOwned},</if>
+            <if test="acquisitionMethod != null">acquisition_method = #{acquisitionMethod},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteFunUserBookByUserId" parameterType="Long">
+        delete from fun_user_book where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteFunUserBookByUserIds" parameterType="String">
+        delete from fun_user_book where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteFunUserBookByBookIdsUserId" parameterType="map">
+        delete from fun_user_book where user_id=#{userId} and fun_user_book.book_id in
+        <foreach item="bookId" collection="bookIds" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+    </delete>
+</mapper>

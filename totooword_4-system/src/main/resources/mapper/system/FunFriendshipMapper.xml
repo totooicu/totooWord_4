@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunFriendshipMapper">
+
+    <resultMap type="FunFriendship" id="FunFriendshipResult">
+        <result property="friendshipId"    column="friendship_id"    />
+        <result property="userId1"    column="user_id_1"    />
+        <result property="userId2"    column="user_id_2"    />
+        <result property="remarkUser1"    column="remark_user_1"    />
+        <result property="remarkUser2"    column="remark_user_2"    />
+        <result property="addTime"    column="add_time"    />
+    </resultMap>
+
+    <sql id="selectFunFriendshipVo">
+        select friendship_id, user_id_1, user_id_2, remark_user_1, remark_user_2, add_time from fun_friendship
+    </sql>
+
+    <select id="selectFunFriendshipList" parameterType="FunFriendship" resultMap="FunFriendshipResult">
+        <include refid="selectFunFriendshipVo"/>
+        <where>
+            <if test="userId1 != null "> and user_id_1 = #{userId1}</if>
+            <if test="userId2 != null "> and user_id_2 = #{userId2}</if>
+            <if test="remarkUser1 != null  and remarkUser1 != ''"> and remark_user_1 = #{remarkUser1}</if>
+            <if test="remarkUser2 != null  and remarkUser2 != ''"> and remark_user_2 = #{remarkUser2}</if>
+            <if test="addTime != null "> and add_time = #{addTime}</if>
+        </where>
+    </select>
+
+    <select id="selectFunFriendshipByFriendshipId" parameterType="String" resultMap="FunFriendshipResult">
+        <include refid="selectFunFriendshipVo"/>
+        where friendship_id = #{friendshipId}
+    </select>
+
+    <insert id="insertFunFriendship" parameterType="FunFriendship" useGeneratedKeys="true" keyProperty="friendshipId">
+        insert into fun_friendship
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId1 != null">user_id_1,</if>
+            <if test="userId2 != null">user_id_2,</if>
+            <if test="remarkUser1 != null">remark_user_1,</if>
+            <if test="remarkUser2 != null">remark_user_2,</if>
+            <if test="addTime != null">add_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId1 != null">#{userId1},</if>
+            <if test="userId2 != null">#{userId2},</if>
+            <if test="remarkUser1 != null">#{remarkUser1},</if>
+            <if test="remarkUser2 != null">#{remarkUser2},</if>
+            <if test="addTime != null">#{addTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFunFriendship" parameterType="FunFriendship">
+        update fun_friendship
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId1 != null">user_id_1 = #{userId1},</if>
+            <if test="userId2 != null">user_id_2 = #{userId2},</if>
+            <if test="remarkUser1 != null">remark_user_1 = #{remarkUser1},</if>
+            <if test="remarkUser2 != null">remark_user_2 = #{remarkUser2},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+        </trim>
+        where friendship_id = #{friendshipId}
+    </update>
+
+    <delete id="deleteFunFriendshipByFriendshipId" parameterType="String">
+        delete from fun_friendship where friendship_id = #{friendshipId}
+    </delete>
+
+    <delete id="deleteFunFriendshipByFriendshipIds" parameterType="String">
+        delete from fun_friendship where friendship_id in
+        <foreach item="friendshipId" collection="array" open="(" separator="," close=")">
+            #{friendshipId}
+        </foreach>
+    </delete>
+</mapper>

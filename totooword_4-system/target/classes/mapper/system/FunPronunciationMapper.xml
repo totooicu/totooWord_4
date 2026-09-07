@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunPronunciationMapper">
+    
+    <resultMap type="FunPronunciation" id="FunPronunciationResult">
+        <result property="wordId"    column="word_id"    />
+        <result property="pronunciationType"    column="pronunciation_type"    />
+        <result property="transcription"    column="transcription"    />
+    </resultMap>
+
+    <sql id="selectFunPronunciationVo">
+        select word_id, pronunciation_type, transcription from fun_pronunciation
+    </sql>
+
+    <select id="selectFunPronunciationList" parameterType="FunPronunciation" resultMap="FunPronunciationResult">
+        <include refid="selectFunPronunciationVo"/>
+        <where>  
+            <if test="transcription != null  and transcription != ''"> and transcription = #{transcription}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunPronunciationByWordId" parameterType="String" resultMap="FunPronunciationResult">
+        <include refid="selectFunPronunciationVo"/>
+        where word_id = #{wordId}
+    </select>
+
+    <insert id="insertFunPronunciation" parameterType="FunPronunciation">
+        insert into fun_pronunciation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">word_id,</if>
+            <if test="pronunciationType != null">pronunciation_type,</if>
+            <if test="transcription != null and transcription != ''">transcription,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">#{wordId},</if>
+            <if test="pronunciationType != null">#{pronunciationType},</if>
+            <if test="transcription != null and transcription != ''">#{transcription},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunPronunciation" parameterType="FunPronunciation">
+        update fun_pronunciation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pronunciationType != null">pronunciation_type = #{pronunciationType},</if>
+            <if test="transcription != null and transcription != ''">transcription = #{transcription},</if>
+        </trim>
+        where word_id = #{wordId}
+    </update>
+
+    <delete id="deleteFunPronunciationByWordId" parameterType="String">
+        delete from fun_pronunciation where word_id = #{wordId}
+    </delete>
+
+    <delete id="deleteFunPronunciationByWordIds" parameterType="String">
+        delete from fun_pronunciation where word_id in 
+        <foreach item="wordId" collection="array" open="(" separator="," close=")">
+            #{wordId}
+        </foreach>
+    </delete>
+</mapper>

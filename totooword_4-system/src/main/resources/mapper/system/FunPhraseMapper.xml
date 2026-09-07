@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunPhraseMapper">
+    
+    <resultMap type="FunPhrase" id="FunPhraseResult">
+        <result property="wordId"    column="word_id"    />
+        <result property="phraseId"    column="phrase_id"    />
+        <result property="phraseText"    column="phrase_text"    />
+        <result property="phraseDefinition"    column="phrase_definition"    />
+    </resultMap>
+
+    <sql id="selectFunPhraseVo">
+        select word_id, phrase_id, phrase_text, phrase_definition from fun_phrase
+    </sql>
+
+    <select id="selectFunPhraseList" parameterType="FunPhrase" resultMap="FunPhraseResult">
+        <include refid="selectFunPhraseVo"/>
+        <where>  
+            <if test="phraseText != null  and phraseText != ''"> and phrase_text = #{phraseText}</if>
+            <if test="phraseDefinition != null  and phraseDefinition != ''"> and phrase_definition = #{phraseDefinition}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunPhraseByWordId" parameterType="String" resultMap="FunPhraseResult">
+        <include refid="selectFunPhraseVo"/>
+        where word_id = #{wordId}
+    </select>
+
+    <insert id="insertFunPhrase" parameterType="FunPhrase">
+        insert into fun_phrase
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">word_id,</if>
+            <if test="phraseId != null">phrase_id,</if>
+            <if test="phraseText != null and phraseText != ''">phrase_text,</if>
+            <if test="phraseDefinition != null and phraseDefinition != ''">phrase_definition,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">#{wordId},</if>
+            <if test="phraseId != null">#{phraseId},</if>
+            <if test="phraseText != null and phraseText != ''">#{phraseText},</if>
+            <if test="phraseDefinition != null and phraseDefinition != ''">#{phraseDefinition},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunPhrase" parameterType="FunPhrase">
+        update fun_phrase
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="phraseId != null">phrase_id = #{phraseId},</if>
+            <if test="phraseText != null and phraseText != ''">phrase_text = #{phraseText},</if>
+            <if test="phraseDefinition != null and phraseDefinition != ''">phrase_definition = #{phraseDefinition},</if>
+        </trim>
+        where word_id = #{wordId}
+    </update>
+
+    <delete id="deleteFunPhraseByWordId" parameterType="String">
+        delete from fun_phrase where word_id = #{wordId}
+    </delete>
+
+    <delete id="deleteFunPhraseByWordIds" parameterType="String">
+        delete from fun_phrase where word_id in 
+        <foreach item="wordId" collection="array" open="(" separator="," close=")">
+            #{wordId}
+        </foreach>
+    </delete>
+</mapper>

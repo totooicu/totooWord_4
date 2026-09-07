@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunMessageListMapper">
+    
+    <resultMap type="FunMessageList" id="FunMessageListResult">
+        <result property="listId"    column="list_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="targetId"    column="target_id"    />
+        <result property="recordType"    column="record_type"    />
+        <result property="isTop"    column="is_top"    />
+        <result property="latestMessageId"    column="latest_message_id"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFunMessageListVo">
+        select list_id, user_id, target_id, record_type, is_top, latest_message_id, update_time from fun_message_list
+    </sql>
+
+    <select id="selectFunMessageListList" parameterType="FunMessageList" resultMap="FunMessageListResult">
+        <include refid="selectFunMessageListVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="targetId != null "> and target_id = #{targetId}</if>
+            <if test="recordType != null  and recordType != ''"> and record_type = #{recordType}</if>
+            <if test="isTop != null  and isTop != ''"> and is_top = #{isTop}</if>
+            <if test="latestMessageId != null "> and latest_message_id = #{latestMessageId}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunMessageListByListId" parameterType="Long" resultMap="FunMessageListResult">
+        <include refid="selectFunMessageListVo"/>
+        where list_id = #{listId}
+    </select>
+
+    <insert id="insertFunMessageList" parameterType="FunMessageList" useGeneratedKeys="true" keyProperty="listId">
+        insert into fun_message_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="targetId != null">target_id,</if>
+            <if test="recordType != null and recordType != ''">record_type,</if>
+            <if test="isTop != null">is_top,</if>
+            <if test="latestMessageId != null">latest_message_id,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="targetId != null">#{targetId},</if>
+            <if test="recordType != null and recordType != ''">#{recordType},</if>
+            <if test="isTop != null">#{isTop},</if>
+            <if test="latestMessageId != null">#{latestMessageId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunMessageList" parameterType="FunMessageList">
+        update fun_message_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="targetId != null">target_id = #{targetId},</if>
+            <if test="recordType != null and recordType != ''">record_type = #{recordType},</if>
+            <if test="isTop != null">is_top = #{isTop},</if>
+            <if test="latestMessageId != null">latest_message_id = #{latestMessageId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where list_id = #{listId}
+    </update>
+
+    <delete id="deleteFunMessageListByListId" parameterType="Long">
+        delete from fun_message_list where list_id = #{listId}
+    </delete>
+
+    <delete id="deleteFunMessageListByListIds" parameterType="String">
+        delete from fun_message_list where list_id in 
+        <foreach item="listId" collection="array" open="(" separator="," close=")">
+            #{listId}
+        </foreach>
+    </delete>
+</mapper>

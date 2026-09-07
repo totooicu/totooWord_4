@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunChatMessageMapper">
+    
+    <resultMap type="FunChatMessage" id="FunChatMessageResult">
+        <result property="messageId"    column="message_id"    />
+        <result property="senderId"    column="sender_id"    />
+        <result property="receiverId"    column="receiver_id"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="messageType"    column="message_type"    />
+        <result property="content"    column="content"    />
+        <result property="sendTime"    column="send_time"    />
+    </resultMap>
+
+    <sql id="selectFunChatMessageVo">
+        select * from fun_chat_message
+    </sql>
+
+    <select id="selectFunChatMessageList" parameterType="FunChatMessage" resultMap="FunChatMessageResult">
+        <include refid="selectFunChatMessageVo"/>
+        <where>  
+            <if test="senderId != null "> and sender_id = #{senderId}</if>
+            <if test="receiverId != null "> and receiver_id = #{receiverId}</if>
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="messageType != null  and messageType != ''"> and message_type = #{messageType}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="sendTime != null "> and send_time = #{sendTime}</if>
+        </where>
+    </select>
+    <select id="selectFunChatMessageLast" parameterType="FunChatMessage" resultMap="FunChatMessageResult">
+        <include refid="selectFunChatMessageVo"/>
+        <where>
+            <if test="senderId != null "> and sender_id = #{senderId}</if>
+            <if test="receiverId != null "> and receiver_id = #{receiverId}</if>
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="messageType != null  and messageType != ''"> and message_type = #{messageType}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="sendTime != null "> and send_time = #{sendTime}</if>
+        </where>
+ORDER BY message_id DESC LIMIT 1
+    </select>
+    <select id="selectFunChatMessageListByUserId" parameterType="Long" resultMap="FunChatMessageResult">
+        <include refid="selectFunChatMessageVo"/>
+        <where>
+             sender_id = #{userId} or receiver_id = #{userId}
+        </where>
+    </select>
+    <select id="selectFunChatMessageByMessageId" parameterType="Long" resultMap="FunChatMessageResult">
+        <include refid="selectFunChatMessageVo"/>
+        where message_id = #{messageId}
+    </select>
+
+    <insert id="insertFunChatMessage" parameterType="FunChatMessage" useGeneratedKeys="true" keyProperty="messageId">
+        insert into fun_chat_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="senderId != null">sender_id,</if>
+            <if test="receiverId != null">receiver_id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="messageType != null and messageType != ''">message_type,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="sendTime != null">send_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="senderId != null">#{senderId},</if>
+            <if test="receiverId != null">#{receiverId},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="messageType != null and messageType != ''">#{messageType},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="sendTime != null">#{sendTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunChatMessage" parameterType="FunChatMessage">
+        update fun_chat_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="senderId != null">sender_id = #{senderId},</if>
+            <if test="receiverId != null">receiver_id = #{receiverId},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="messageType != null and messageType != ''">message_type = #{messageType},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="sendTime != null">send_time = #{sendTime},</if>
+        </trim>
+        where message_id = #{messageId}
+    </update>
+
+    <delete id="deleteFunChatMessageByMessageId" parameterType="Long">
+        delete from fun_chat_message where message_id = #{messageId}
+    </delete>
+
+    <delete id="deleteFunChatMessageByMessageIds" parameterType="String">
+        delete from fun_chat_message where message_id in 
+        <foreach item="messageId" collection="array" open="(" separator="," close=")">
+            #{messageId}
+        </foreach>
+    </delete>
+
+    <select id="getLastMessageByChatMessageByUserIdOrGroupId" parameterType="FunChatMessage" resultMap="FunChatMessageResult">
+        <include refid="selectFunChatMessageVo"/>
+        <where>
+            <!-- 私聊消息 -->
+            <if test="messageType == '0'">
+                (<if test="senderId != null and senderId != ''">AND sender_id = #{senderId}</if>
+                <if test="receiverId != null and receiverId != ''"> AND receiver_id = #{receiverId})</if>
+                )OR(
+                <if test="receiverId != null and receiverId != ''">sender_id = #{receiverId}</if>
+                <if test="senderId != null and senderId != ''"> AND receiver_id = #{senderId})</if>)
+                And message_type = #{messageType}
+            </if>
+            <!-- 群聊消息 -->
+            <if test="messageType == '1'">
+                group_id = #{groupId}
+            </if>
+            And message_type = #{messageType}
+        </where>
+        ORDER BY message_id DESC LIMIT 1
+    </select>
+</mapper>

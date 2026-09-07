@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunInflectionMapper">
+    
+    <resultMap type="FunInflection" id="FunInflectionResult">
+        <result property="wordId"    column="word_id"    />
+        <result property="inflectionType"    column="inflection_type"    />
+        <result property="inflectionText"    column="inflection_text"    />
+    </resultMap>
+
+    <sql id="selectFunInflectionVo">
+        select word_id, inflection_type, inflection_text from fun_inflection
+    </sql>
+
+    <select id="selectFunInflectionList" parameterType="FunInflection" resultMap="FunInflectionResult">
+        <include refid="selectFunInflectionVo"/>
+        <where>  
+            <if test="inflectionText != null  and inflectionText != ''"> and inflection_text = #{inflectionText}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunInflectionByWordId" parameterType="String" resultMap="FunInflectionResult">
+        <include refid="selectFunInflectionVo"/>
+        where word_id = #{wordId}
+    </select>
+
+    <insert id="insertFunInflection" parameterType="FunInflection">
+        insert into fun_inflection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">word_id,</if>
+            <if test="inflectionType != null">inflection_type,</if>
+            <if test="inflectionText != null and inflectionText != ''">inflection_text,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">#{wordId},</if>
+            <if test="inflectionType != null">#{inflectionType},</if>
+            <if test="inflectionText != null and inflectionText != ''">#{inflectionText},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunInflection" parameterType="FunInflection">
+        update fun_inflection
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inflectionType != null">inflection_type = #{inflectionType},</if>
+            <if test="inflectionText != null and inflectionText != ''">inflection_text = #{inflectionText},</if>
+        </trim>
+        where word_id = #{wordId}
+    </update>
+
+    <delete id="deleteFunInflectionByWordId" parameterType="String">
+        delete from fun_inflection where word_id = #{wordId}
+    </delete>
+
+    <delete id="deleteFunInflectionByWordIds" parameterType="String">
+        delete from fun_inflection where word_id in 
+        <foreach item="wordId" collection="array" open="(" separator="," close=")">
+            #{wordId}
+        </foreach>
+    </delete>
+</mapper>

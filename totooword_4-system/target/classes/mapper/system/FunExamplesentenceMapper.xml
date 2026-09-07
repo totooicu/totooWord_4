@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunExamplesentenceMapper">
+    
+    <resultMap type="FunExamplesentence" id="FunExamplesentenceResult">
+        <result property="wordId"    column="word_id"    />
+        <result property="sentenceId"    column="sentence_id"    />
+        <result property="sentenceText"    column="sentence_text"    />
+        <result property="sentenceDefinition"    column="sentence_definition"    />
+    </resultMap>
+
+    <sql id="selectFunExamplesentenceVo">
+        select word_id, sentence_id, sentence_text, sentence_definition from fun_examplesentence
+    </sql>
+
+    <select id="selectFunExamplesentenceList" parameterType="FunExamplesentence" resultMap="FunExamplesentenceResult">
+        <include refid="selectFunExamplesentenceVo"/>
+        <where>  
+            <if test="sentenceText != null  and sentenceText != ''"> and sentence_text = #{sentenceText}</if>
+            <if test="sentenceDefinition != null  and sentenceDefinition != ''"> and sentence_definition = #{sentenceDefinition}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunExamplesentenceByWordId" parameterType="String" resultMap="FunExamplesentenceResult">
+        <include refid="selectFunExamplesentenceVo"/>
+        where word_id = #{wordId}
+    </select>
+
+    <insert id="insertFunExamplesentence" parameterType="FunExamplesentence">
+        insert into fun_examplesentence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">word_id,</if>
+            <if test="sentenceId != null">sentence_id,</if>
+            <if test="sentenceText != null and sentenceText != ''">sentence_text,</if>
+            <if test="sentenceDefinition != null and sentenceDefinition != ''">sentence_definition,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">#{wordId},</if>
+            <if test="sentenceId != null">#{sentenceId},</if>
+            <if test="sentenceText != null and sentenceText != ''">#{sentenceText},</if>
+            <if test="sentenceDefinition != null and sentenceDefinition != ''">#{sentenceDefinition},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunExamplesentence" parameterType="FunExamplesentence">
+        update fun_examplesentence
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sentenceId != null">sentence_id = #{sentenceId},</if>
+            <if test="sentenceText != null and sentenceText != ''">sentence_text = #{sentenceText},</if>
+            <if test="sentenceDefinition != null and sentenceDefinition != ''">sentence_definition = #{sentenceDefinition},</if>
+        </trim>
+        where word_id = #{wordId}
+    </update>
+
+    <delete id="deleteFunExamplesentenceByWordId" parameterType="String">
+        delete from fun_examplesentence where word_id = #{wordId}
+    </delete>
+
+    <delete id="deleteFunExamplesentenceByWordIds" parameterType="String">
+        delete from fun_examplesentence where word_id in 
+        <foreach item="wordId" collection="array" open="(" separator="," close=")">
+            #{wordId}
+        </foreach>
+    </delete>
+</mapper>

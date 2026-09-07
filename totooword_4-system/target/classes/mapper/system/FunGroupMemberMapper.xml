@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunGroupMemberMapper">
+    
+    <resultMap type="FunGroupMember" id="FunGroupMemberResult">
+        <result property="memberId"    column="member_id"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="memberName"    column="member_name"    />
+        <result property="joinTime"    column="join_time"    />
+        <result property="role"    column="role"    />
+        <result property="latestMessageId"    column="latest_message_id"    />
+    </resultMap>
+
+    <sql id="selectFunGroupMemberVo">
+        select member_id, group_id, user_id, member_name, join_time, role, latest_message_id from fun_group_member
+    </sql>
+
+    <select id="selectFunGroupMemberList" parameterType="FunGroupMember" resultMap="FunGroupMemberResult">
+        <include refid="selectFunGroupMemberVo"/>
+        <where>  
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="memberName != null  and memberName != ''"> and member_name like concat('%', #{memberName}, '%')</if>
+            <if test="joinTime != null "> and join_time = #{joinTime}</if>
+            <if test="role != null  and role != ''"> and role = #{role}</if>
+            <if test="latestMessageId != null "> and latest_message_id = #{latestMessageId}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunGroupMemberByMemberId" parameterType="Long" resultMap="FunGroupMemberResult">
+        <include refid="selectFunGroupMemberVo"/>
+        where member_id = #{memberId}
+    </select>
+
+    <insert id="insertFunGroupMember" parameterType="FunGroupMember" useGeneratedKeys="true" keyProperty="memberId">
+        insert into fun_group_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">group_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="memberName != null">member_name,</if>
+            <if test="joinTime != null">join_time,</if>
+            <if test="role != null">role,</if>
+            <if test="latestMessageId != null">latest_message_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">#{groupId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="memberName != null">#{memberName},</if>
+            <if test="joinTime != null">#{joinTime},</if>
+            <if test="role != null">#{role},</if>
+            <if test="latestMessageId != null">#{latestMessageId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunGroupMember" parameterType="FunGroupMember">
+        update fun_group_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="memberName != null">member_name = #{memberName},</if>
+            <if test="joinTime != null">join_time = #{joinTime},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="latestMessageId != null">latest_message_id = #{latestMessageId},</if>
+        </trim>
+        <where>
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </update>
+
+    <delete id="deleteFunGroupMemberByMemberId" parameterType="Long">
+        delete from fun_group_member where member_id = #{memberId}
+    </delete>
+
+    <delete id="deleteFunGroupMemberByMemberIds" parameterType="String">
+        delete from fun_group_member where member_id in 
+        <foreach item="memberId" collection="array" open="(" separator="," close=")">
+            #{memberId}
+        </foreach>
+    </delete>
+    <select id="witchMemberIsInGroupByUserId" parameterType="Long">
+        select * from fun_group_member where user_id = #{userId} and (role= '0' or role = '1' or role = '2')
+    </select>
+    <select id="witchMemberIsInGroupByGroupId" parameterType="Long">
+        select * from fun_group_member where group_id = #{groupId} and (role= '0' or role = '1' or role = '2')
+    </select>
+</mapper>

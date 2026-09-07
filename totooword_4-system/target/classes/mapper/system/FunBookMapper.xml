@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunBookMapper">
+
+    <resultMap type="FunBook" id="FunBookResult">
+        <result property="bookId"    column="book_id"    />
+        <result property="ownerId"    column="owner_id"    />
+        <result property="title"    column="title"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="isPublished"    column="is_published"    />
+        <result property="description"    column="description"    />
+        <result property="intro"    column="intro"    />
+        <result property="language"    column="language"    />
+    </resultMap>
+
+    <sql id="selectFunBookVo">
+        select book_id, owner_id, title, add_time, is_published, description, intro, language from fun_book
+    </sql>
+
+    <select id="selectFunBookList" parameterType="FunBook" resultMap="FunBookResult">
+        <include refid="selectFunBookVo"/>
+        <where>
+            <if test="bookId != null "> and book_id = #{bookId}</if>
+            <if test="ownerId != null "> and owner_id = #{ownerId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="addTime != null "> and add_time = #{addTime}</if>
+            <if test="isPublished != null "> and is_published = #{isPublished}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="intro != null  and intro != ''"> and intro = #{intro}</if>
+            <if test="language != null  and language != ''"> and language = #{language}</if>
+        </where>
+    </select>
+
+    <select id="selectFunBookByBookId" parameterType="String" resultMap="FunBookResult">
+        <include refid="selectFunBookVo"/>
+        where book_id = #{bookId}
+    </select>
+
+    <insert id="insertFunBook" parameterType="FunBook" useGeneratedKeys="true" keyProperty="bookId">
+        insert into fun_book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ownerId != null">owner_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="addTime != null">add_time,</if>
+            <if test="isPublished != null">is_published,</if>
+            <if test="description != null">description,</if>
+            <if test="intro != null">intro,</if>
+            <if test="language != null">language,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ownerId != null">#{ownerId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="addTime != null">#{addTime},</if>
+            <if test="isPublished != null">#{isPublished},</if>
+            <if test="description != null">#{description},</if>
+            <if test="intro != null">#{intro},</if>
+            <if test="language != null">#{language},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFunBook" parameterType="FunBook">
+        update fun_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ownerId != null">owner_id = #{ownerId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+            <if test="isPublished != null">is_published = #{isPublished},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="intro != null">intro = #{intro},</if>
+            <if test="language != null">language = #{language},</if>
+        </trim>
+        where book_id = #{bookId}
+    </update>
+
+    <delete id="deleteFunBookByBookId" parameterType="String">
+        delete from fun_book where book_id = #{bookId}
+    </delete>
+
+    <delete id="deleteFunBookByBookIds" parameterType="String">
+        delete from fun_book where book_id in
+        <foreach item="bookId" collection="array" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+    </delete>
+</mapper>

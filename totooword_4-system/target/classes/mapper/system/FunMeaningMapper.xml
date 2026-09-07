@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totoo.system.mapper.FunMeaningMapper">
+    
+    <resultMap type="FunMeaning" id="FunMeaningResult">
+        <result property="wordId"    column="word_id"    />
+        <result property="meaningId"    column="meaning_id"    />
+        <result property="meaningType"    column="meaning_type"    />
+        <result property="meaningDefinition"    column="meaning_definition"    />
+    </resultMap>
+
+    <sql id="selectFunMeaningVo">
+        select word_id, meaning_id, meaning_type, meaning_definition from fun_meaning
+    </sql>
+
+    <select id="selectFunMeaningList" parameterType="FunMeaning" resultMap="FunMeaningResult">
+        <include refid="selectFunMeaningVo"/>
+        <where>  
+            <if test="meaningType != null  and meaningType != ''"> and meaning_type = #{meaningType}</if>
+            <if test="meaningDefinition != null  and meaningDefinition != ''"> and meaning_definition = #{meaningDefinition}</if>
+        </where>
+    </select>
+    
+    <select id="selectFunMeaningByWordId" parameterType="String" resultMap="FunMeaningResult">
+        <include refid="selectFunMeaningVo"/>
+        where word_id = #{wordId}
+    </select>
+
+    <insert id="insertFunMeaning" parameterType="FunMeaning">
+        insert into fun_meaning
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">word_id,</if>
+            <if test="meaningId != null">meaning_id,</if>
+            <if test="meaningType != null and meaningType != ''">meaning_type,</if>
+            <if test="meaningDefinition != null and meaningDefinition != ''">meaning_definition,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wordId != null">#{wordId},</if>
+            <if test="meaningId != null">#{meaningId},</if>
+            <if test="meaningType != null and meaningType != ''">#{meaningType},</if>
+            <if test="meaningDefinition != null and meaningDefinition != ''">#{meaningDefinition},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFunMeaning" parameterType="FunMeaning">
+        update fun_meaning
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="meaningId != null">meaning_id = #{meaningId},</if>
+            <if test="meaningType != null and meaningType != ''">meaning_type = #{meaningType},</if>
+            <if test="meaningDefinition != null and meaningDefinition != ''">meaning_definition = #{meaningDefinition},</if>
+        </trim>
+        where word_id = #{wordId}
+    </update>
+
+    <delete id="deleteFunMeaningByWordId" parameterType="String">
+        delete from fun_meaning where word_id = #{wordId}
+    </delete>
+
+    <delete id="deleteFunMeaningByWordIds" parameterType="String">
+        delete from fun_meaning where word_id in 
+        <foreach item="wordId" collection="array" open="(" separator="," close=")">
+            #{wordId}
+        </foreach>
+    </delete>
+</mapper>

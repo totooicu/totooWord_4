@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@vue/composition-api": "^1.7.2",
+    "ec-canvas": "^1.0.0",
+    "pinia": "^3.0.1"
+  }
+}
